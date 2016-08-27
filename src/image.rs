@@ -1,24 +1,33 @@
 #![allow(dead_code)]
 
+use std::default::Default;
 use std::io;
 
 // ------------------------
-// Color
+// Pixel
 // ------------------------
 
-#[derive(Clone, Debug)]
-struct Color {
+#[derive(Clone, Copy, Debug)]
+pub struct Pixel {
     channels: [u8; 4],
 }
 
 
-impl Color {
-    fn new() -> Color { Color { channels: [0; 4] } }
+impl Pixel {
+    fn new(r: u8, g: u8, b: u8, a: u8) -> Pixel {
+        Pixel { channels: [r, g, b, a] }
+    }
     fn channels(&self) -> [u8; 4] { self.channels }
     fn red(&self) -> u8 { self.channels[0] }
     fn green(&self) -> u8 { self.channels[1] }
     fn blue(&self) -> u8 { self.channels[2] }
     fn alpha(&self) -> u8 { self.channels[3] }
+}
+
+impl Default for Pixel {
+    fn default() -> Self {
+        Pixel { channels: [0u8; 4] }
+    }
 }
 
 
@@ -27,16 +36,16 @@ impl Color {
 // ------------------------
 
 pub struct Image {
-    data: Vec<Color>,
-    width: u16,
-    height: u16
+    data: Vec<Pixel>,
+    width: usize,
+    height: usize
 }
 
 impl Image {
-    pub fn new(w: u16, h: u16) -> Image {
-        let n: usize = (w as usize) * (h as usize);
+    pub fn new(w: usize, h: usize) -> Image {
+        let n: usize = w * h;
         Image {
-            data: vec![Color::new(); n],
+            data: vec![Pixel::default(); n],
             width: w,
             height: h
         }
@@ -52,9 +61,7 @@ impl Image {
         Ok(())
     }
 
-    // pub fn set(&mut self, x: u16, y: u16, c: &Color) {
-    pub fn set(&mut self, x: usize, y: usize, c: &Color) {
-        let index = x * (self.width as usize) + y;
-        self.data[x * self.width + y] = c;
+    pub fn set(&mut self, x: usize, y: usize, c: &Pixel) {
+        self.data[(x * (self.width as usize)) + y] = *c;
     }
 }

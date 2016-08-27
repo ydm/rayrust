@@ -1,8 +1,9 @@
+pub mod color;
 pub mod image;
 
-#[cfg(test)]
-mod tests {
-    #[test]
-    fn it_works() {
-    }
-}
+// #[cfg(test)]
+// mod tests {
+//     #[test]
+//     fn it_works() {
+//     }
+// }

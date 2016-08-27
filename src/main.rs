@@ -4,6 +4,11 @@ use std::fs;
 use rayrust::image;
 
 
+fn color(x: f32, y: f32) -> image::Color {
+    
+}
+
+
 fn main() {
     let img = image::Image::new(800, 600);
 
