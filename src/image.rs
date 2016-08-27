@@ -1,67 +1,52 @@
-#![allow(dead_code)]
-
-use std::default::Default;
 use std::io;
+use super::color;
 
-// ------------------------
-// Pixel
-// ------------------------
 
-#[derive(Clone, Copy, Debug)]
-pub struct Pixel {
-    channels: [u8; 4],
+/// Types that can be converted to a [u8; 4] RGBA.
+trait ToRGBA255 {
+    fn rgba255(&self) -> [u8; 4];
 }
 
-
-impl Pixel {
-    fn new(r: u8, g: u8, b: u8, a: u8) -> Pixel {
-        Pixel { channels: [r, g, b, a] }
-    }
-    fn channels(&self) -> [u8; 4] { self.channels }
-    fn red(&self) -> u8 { self.channels[0] }
-    fn green(&self) -> u8 { self.channels[1] }
-    fn blue(&self) -> u8 { self.channels[2] }
-    fn alpha(&self) -> u8 { self.channels[3] }
-}
-
-impl Default for Pixel {
-    fn default() -> Self {
-        Pixel { channels: [0u8; 4] }
+impl ToRGBA255 for color::Color {
+    fn rgba255(&self) -> [u8; 4] {
+        let f = |x: f32| (x * 255.0) as u8;        
+        [ f(self.channels()[0]),
+          f(self.channels()[1]),
+          f(self.channels()[2]),
+          f(self.channels()[3]) ]
     }
 }
-
-
-// ------------------------
-// Image
-// ------------------------
 
 pub struct Image {
-    data: Vec<Pixel>,
-    width: usize,
-    height: usize
+    _data: Vec<color::Color>,
+    _width: usize,
+    _height: usize,
 }
 
 impl Image {
     pub fn new(w: usize, h: usize) -> Image {
-        let n: usize = w * h;
         Image {
-            data: vec![Pixel::default(); n],
-            width: w,
-            height: h
+            _data: vec![color::Color::default(); w * h],
+            _width: w,
+            _height: h
         }
     }
 
-    pub fn write<T>(&self, out: &mut T) -> io::Result<()>
+    pub fn width(&self) -> usize { self._width }
+    pub fn height(&self) -> usize { self._height }
+
+    pub fn writeppm<T>(&self, out: &mut T) -> io::Result<()>
         where T: io::Write {
         //
-        try!(write!(out, "P6 {} {} 255 ", self.width, self.height));
-        for color in &self.data {
-            try!(out.write_all(&color.channels()));
+        try!(write!(out, "P6 {} {} 255 ", self._width, self._height));
+        for color in &self._data {
+            let channels = &color.rgba255()[0..3];
+            try!(out.write_all(&channels));
         }
         Ok(())
     }
 
-    pub fn set(&mut self, x: usize, y: usize, c: &Pixel) {
-        self.data[(x * (self.width as usize)) + y] = *c;
+    pub fn set(&mut self, x: usize, y: usize, c: &color::Color) {
+        self._data[(x * self._width) + y] = *c;
     }
 }
