@@ -1,0 +1,6 @@
+[package]
+name = "rayrust"
+version = "0.1.0"
+authors = ["Yordan Miladinov <yordan@4web.bg>"]
+
+[dependencies]
