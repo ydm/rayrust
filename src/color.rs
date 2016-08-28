@@ -19,6 +19,6 @@ impl Color {
 
 impl Default for Color {
     fn default() -> Self {
-        Color { _channels: [0f32; 4] }
+        Color { _channels: [0.0; 4] }
     }
 }

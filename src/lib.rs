@@ -1,9 +1,5 @@
 pub mod color;
 pub mod image;
-
-// #[cfg(test)]
-// mod tests {
-//     #[test]
-//     fn it_works() {
-//     }
-// }
+pub mod primitive;
+pub mod ray;
+pub mod stuff;
