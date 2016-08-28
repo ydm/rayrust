@@ -29,7 +29,18 @@ fn camera_to_world() {
 
 #[test]
 fn camera_to_world1() {
+    let eye = na::Point3::<Real>::new(5.0, 5.0, 0.0);
+    let center = na::Point3::<Real>::new(0.0, 0.0, 0.0);
+    let up = na::Vector3::<Real>::new(0.0, 1.0, 0.0);
+    let M = camera::camera_to_world(&eye, &center, &up);
+
     let s = (RealConsts::PI / 4.0).sin();
+    assert_approx_eq!(M, na::Matrix4::new(
+         0.0,  0.0, -1.0, 0.0,  // x
+          -s,    s,  0.0, 0.0,  // y
+           s,    s,  0.0, 0.0,  // z
+        -5.0, -5.0,  0.0, 1.0   // t
+    ));
 }
 
 #[test]
