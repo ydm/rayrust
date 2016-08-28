@@ -26,24 +26,13 @@ impl ray::Intersectable<f32> for Sphere<f32> {
         let c = v.norm_squared() - self._radius;
         let d = 4.0 * (b*b - c);
 
-        // return
-        if d < 0.0 {
-            return vec![];
-        } else if d == 0.0 {
-            return vec![-b / 2.0];
-        } else {
-                let k = d.sqrt() / 2.0;
-                return vec![-b - k, -b + k];
+        match d {
+            _ if d < 0.0 => vec![],    // zero
+                     0.0 => vec![-b],  // one
+                       _ => {          // two
+                           let k = d.sqrt() / 2.0;
+                           vec![-b-k, -b+k]
+                       }
         }
-
-        // match d {
-        //     _ if d < 0.0 => vec![],
-        //     0.0          => vec![-b / 2.0],
-        //     _            => {
-        //         let mb2 = -b / 2.0;
-        //         let k2 = d.sqrt() / 2.0;
-        //         vec![mb2 + k2, mb2 - k2]
-        //     }
-        // }
     }
 }
