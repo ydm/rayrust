@@ -4,46 +4,41 @@ use super::types::{ Real };
 
 
 // ------------------------
-// Conversions
+// nalgebra isn't a beauty
 // ------------------------
 
-pub fn m4_from_3v3(x: &na::Vector3<Real>,
-                   y: &na::Vector3<Real>,
-                   z: &na::Vector3<Real>)
+
+
+
+// ------------------------
+// Matrix constructors
+// ------------------------
+
+pub fn mfrom3v(x: &na::Vector4<Real>,
+               y: &na::Vector4<Real>,
+               z: &na::Vector4<Real>)
 //
-                   -> na::Matrix4<Real> {
+               -> na::Matrix4<Real> {
     na::Matrix4::new(
-        x.x, x.y, x.z, 0.0,
-        y.x, y.y, y.z, 0.0,
-        z.x, z.y, z.z, 0.0,
+        x.x, x.y, x.z, x.w,
+        y.x, y.y, y.z, y.w,
+        z.x, z.y, z.z, z.w,
         0.0, 0.0, 0.0, 1.0
     )
 }
 
-pub fn m4_from_4v3(x: &na::Vector3<Real>,
-                   y: &na::Vector3<Real>,
-                   z: &na::Vector3<Real>,
-                   t: &na::Vector3<Real>)
+pub fn mfrom4v(x: &na::Vector4<Real>,
+               y: &na::Vector4<Real>,
+               z: &na::Vector4<Real>,
+               t: &na::Vector4<Real>)
 //
-                   -> na::Matrix4<Real> {
+               -> na::Matrix4<Real> {
     na::Matrix4::new(
-        x.x, x.y, x.z, 0.0,
-        y.x, y.y, y.z, 0.0,
-        z.x, z.y, z.z, 0.0,
-        t.x, t.y, t.z, 1.0
+        x.x, x.y, x.z, x.w,
+        y.x, y.y, y.z, y.w,
+        z.x, z.y, z.z, z.w,
+        t.x, t.y, t.z, t.w
     )
-}
-
-pub fn p3_from_p4(p: &na::Point4<Real>) -> na::Point3<Real> {
-    na::Point3::new(p.x, p.y, p.z)
-}
-
-pub fn v3_from_p3(p: &na::Point3<Real>) -> na::Vector3<Real> {
-    na::Vector3::new(p.x, p.y, p.z)
-}
-
-pub fn v3_from_v4(v: &na::Vector4<Real>) -> na::Vector3<Real> {
-    na::Vector3::new(v.x, v.y, v.z)
 }
 
 
