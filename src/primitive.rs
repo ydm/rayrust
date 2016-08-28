@@ -2,6 +2,7 @@ extern crate nalgebra as na;
 
 use self::na::Norm;
 use super::ray;
+use super::types::{ Real };
 
 
 pub struct Sphere<T> {
@@ -15,9 +16,9 @@ impl<T: Copy> Sphere<T> {
     }
 }
 
-impl ray::Intersectable<f32> for Sphere<f32> {
-    fn intersections(&self, ray: &ray::Ray<f32>) -> Vec<f32> {
-        let v: na::Vector3<f32> = *ray.origin() - self._center;
+impl ray::Intersectable<Real> for Sphere<Real> {
+    fn intersections(&self, ray: &ray::Ray<Real>) -> Vec<Real> {
+        let v: na::Vector3<Real> = *ray.origin() - self._center;
 
         // Solve the quadratic equation
         //

@@ -10,7 +10,7 @@ use rayrust::ray::{ self, Intersectable };
 
 
 #[test]
-fn test_sphere_intersection() {
+fn sphere_intersection() {
     let sphere = primitive::Sphere::new(
         &na::Vector3::new(0.0, 0.0, -5.0), // center
         1.0                                // radius
