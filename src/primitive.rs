@@ -6,12 +6,12 @@ use super::types::{ Real };
 
 
 pub struct Sphere<T> {
-    _center: na::Vector3<T>,
+    _center: na::Point3<T>,
     _radius: T,
 }
 
 impl<T: Copy> Sphere<T> {
-    pub fn new(center: &na::Vector3<T>, radius: T) -> Sphere<T> {
+    pub fn new(center: &na::Point3<T>, radius: T) -> Sphere<T> {
         Sphere { _center: *center, _radius: radius }
     }
 }

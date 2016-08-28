@@ -14,19 +14,19 @@ pub trait Intersectable<T: Clone> {
 }
 
 pub struct Ray<T> {
-    _origin: na::Vector3<T>,
+    _origin: na::Point3<T>,
     _direction: na::Vector3<T>,
 }
 
 impl<T: Copy> Ray<T> {
-    pub fn new(o: &na::Vector3<T>, d: &na::Vector3<T>) -> Ray<T> {
+    pub fn new(o: &na::Point3<T>, d: &na::Vector3<T>) -> Ray<T> {
         Ray {
             _origin: *o,
             _direction: *d,
         }
     }
 
-    pub fn origin(&self) -> &na::Vector3<T> {
+    pub fn origin(&self) -> &na::Point3<T> {
         &self._origin
     }
 

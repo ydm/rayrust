@@ -1,6 +1,6 @@
 extern crate nalgebra as na;
 
-// use self::na::ToHomogeneous;
+// use self::na::FromHomogeneous;
 
 use super::linear;
 use super::ray;
@@ -29,9 +29,24 @@ impl OrthographicCamera {
         }
     }
 
-    // pub fn generate_ray(&self, x: usize, y: usize) -> ray::Ray {
-    //     // na::Vector3::<Real>::new(x as Real, y as Real, 1.0)
-    // }
+    pub fn generate_ray(&self, x: usize, y: usize) -> ray::Ray<Real> {
+        let p1 = na::Point4::<Real>::new(x as Real, y as Real, 0.0, 1.0);
+        let p2 = p1 * self._raster_to_camera;
+        let p3 = p2 * self._camera_to_world;
+
+        let d1 = na::Vector4::<Real>::new(0.0, 0.0, -1.0, 0.0);
+        let d2 = d1 * self._raster_to_camera;
+        let d3 = d2 * self._camera_to_world;
+
+        // let omg: na::Vector3<Real> = na::Vector3::<Real>::from(&d3);
+        // d3.from();
+
+        // ray::Ray::new(p3.from_homogeneous(), d3.from_homogeneous())
+        ray::Ray::new(
+            &na::Point3::new(0.0, 0.0, 0.0),
+            &na::Vector3::new(0.0, 0.0, 0.0)
+        )
+    }
 }
 
 pub fn raster_to_ndc(dim: (usize, usize)) -> na::Matrix4<Real> {
@@ -52,13 +67,13 @@ pub fn screen_to_ortho() -> na::Matrix4<Real> {
 pub fn camera_to_world(eye: &na::Vector3<Real>,
                        center: &na::Vector3<Real>,
                        up: &na::Vector3<Real>)
+//
                        -> na::Matrix4<Real> {
-    //
     let d = *center - *eye;
     let f = na::normalize(&d);
     let s = na::normalize(&na::cross(&f, up));
     let u = na::cross(&f, &s);
-    linear::from4fv(&s, &u, &-f, &-*eye)
+    linear::mfrom4fv(&s, &u, &-f, &-*eye)
 }
 
 // pub fn raster_to_ndc(width: u16, height: u16, p: &na::Vector3<u16>)

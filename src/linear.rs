@@ -3,11 +3,11 @@ extern crate nalgebra as na;
 use super::types::{ Real };
 
 
-pub fn from3fv(x: &na::Vector3<Real>,
-               y: &na::Vector3<Real>,
-               z: &na::Vector3<Real>)
+pub fn m4from3fv(x: &na::Vector3<Real>,
+                 y: &na::Vector3<Real>,
+                 z: &na::Vector3<Real>)
 //
-               -> na::Matrix4<Real> {
+                 -> na::Matrix4<Real> {
     na::Matrix4::new(
         x.x, x.y, x.z, 0.0,
         y.x, y.y, y.z, 0.0,
@@ -16,12 +16,12 @@ pub fn from3fv(x: &na::Vector3<Real>,
     )
 }
 
-pub fn from4fv(x: &na::Vector3<Real>,
-               y: &na::Vector3<Real>,
-               z: &na::Vector3<Real>,
-               t: &na::Vector3<Real>)
+pub fn m4from4fv(x: &na::Vector3<Real>,
+                 y: &na::Vector3<Real>,
+                 z: &na::Vector3<Real>,
+                 t: &na::Vector3<Real>)
 //
-               -> na::Matrix4<Real> {
+                 -> na::Matrix4<Real> {
     na::Matrix4::new(
         x.x, x.y, x.z, 0.0,
         y.x, y.y, y.z, 0.0,
@@ -51,3 +51,5 @@ pub fn translate3f(x: Real, y: Real, z: Real) -> na::Matrix4<Real> {
         x, y, z, l
     )
 }
+
+// pub fn v3from
