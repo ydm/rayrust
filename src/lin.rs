@@ -14,12 +14,20 @@ pub fn cross(p: &na::Vector4<Real>, q: &na::Vector4<Real>)
       (p.x * q.y) - (p.y * q.x))
 }
 
-fn p(x: Real, y: Real, z: Real) -> na::Point4<Real> {
+pub fn p(x: Real, y: Real, z: Real) -> na::Point4<Real> {
     na::Point4::<Real>::new(x, y, z, 1.0)
 }
 
-fn v(x: Real, y: Real, z: Real) -> na::Vector4<Real> {
+pub fn v(x: Real, y: Real, z: Real) -> na::Vector4<Real> {
     na::Vector4::<Real>::new(x, y, z, 0.0)
+}
+
+/// Negate just the x, y, z components of a point, leaving its w value
+/// unchanged.
+pub fn negp(p: &na::Point4<Real>) -> na::Point4<Real> {
+    let mut ans = -*p;
+    ans[3] = p[3];
+    ans
 }
 
 

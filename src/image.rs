@@ -47,6 +47,6 @@ impl Image {
     }
 
     pub fn set(&mut self, x: usize, y: usize, c: &color::Color) {
-        self._data[(x * self._width) + y] = *c;
+        self._data[x + (y * self._width)] = *c;
     }
 }

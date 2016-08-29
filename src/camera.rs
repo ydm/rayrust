@@ -1,8 +1,6 @@
 extern crate nalgebra as na;
 
-// use self::na::FromHomogeneous;
-
-use super::linear;
+use super::lin;
 use super::ray;
 use super::types::{ Real };
 
@@ -18,9 +16,9 @@ impl OrthographicCamera {
         let ratio = (dim.0 as Real) / (dim.1 as Real);
         OrthographicCamera {
             _camera_to_world: camera_to_world(
-                &na::Point4::new(0.0, 0.0, 5.0, 1.0),
-                &na::Point4::new(0.0, 0.0, 0.0, 0.0),
-                &na::Vector4::new(0.0, 1.0, 0.0, 0.0)
+                &lin::p(0.0, 0.0, 5.0),
+                &lin::p(0.0, 0.0, 0.0),
+                &lin::v(0.0, 1.0, 0.0)
             ),
             _raster_to_camera: raster_to_ndc(dim)
                 * ndc_to_screen(ratio)
@@ -30,11 +28,11 @@ impl OrthographicCamera {
     }
 
     pub fn generate_ray(&self, x: usize, y: usize) -> ray::Ray<Real> {
-        let o1 = na::Point4::<Real>::new(x as Real, y as Real, 0.0, 1.0);
+        let o1 = lin::p(x as Real, y as Real, 0.0);
         let o2 = o1 * self._raster_to_camera;
         let o3 = o2 * self._camera_to_world;
 
-        let d1 = na::Vector4::<Real>::new(0.0, 0.0, -1.0, 0.0);
+        let d1 = lin::v(0.0, 0.0, -1.0);
         let d2 = d1 * self._raster_to_camera;
         let d3 = d2 * self._camera_to_world;
 
@@ -45,16 +43,21 @@ impl OrthographicCamera {
 pub fn raster_to_ndc(dim: (usize, usize)) -> na::Matrix4<Real> {
     let w = 1.0 / (dim.0 as Real);
     let h = 1.0 / (dim.1 as Real);
-    linear::scale3f(w, h, 1.0)
+    lin::scale3f(w, h, 1.0)
 }
 
 pub fn ndc_to_screen(ratio: Real) -> na::Matrix4<Real> {
-    linear::translate3f(-0.5, -0.5, 0.0)
-        * linear::scale3f(2.0 * ratio, 2.0, 1.0)
+    lin::translate3f(-0.5, -0.5, 0.0) * lin::scale3f(2.0 * ratio, 2.0, 1.0)
 }
 
 pub fn screen_to_ortho() -> na::Matrix4<Real> {
-    na::new_identity(4)
+    // TODO: Expand the view!
+    na::Matrix4::new(
+        1.0,  0.0, 0.0, 0.0,  // x
+        0.0, -1.0, 0.0, 0.0,  // y
+        0.0,  0.0, 1.0, 0.0,  // z
+        0.0,  0.0, 0.0, 1.0,  // w
+    )
 }
 
 pub fn camera_to_world(eye: &na::Point4<Real>,
@@ -64,33 +67,7 @@ pub fn camera_to_world(eye: &na::Point4<Real>,
                        -> na::Matrix4<Real> {
     let d = *center - *eye;
     let f = na::normalize(&d);
-    let s = na::normalize(&linear::cross(&f, up));
-    let u = linear::cross(&s, &f);
-    linear::m4v(&s, &u, &-f, &-eye.to_vector())
+    let s = na::normalize(&lin::cross(&f, up));
+    let u = lin::cross(&s, &f);
+    lin::m4v(&s, &u, &-f, &eye.to_vector())
 }
-
-// pub fn raster_to_ndc(width: u16, height: u16, p: &na::Vector3<u16>)
-//                      -> na::Vector3<f32> {
-//     let w = 1.0 / (w as f32);
-//     let h = 1.0 / (h as f32);
-//     let o = 1.0;
-//     let z = 0.0;
-//     let scale = na::Matrix3::new(
-//         w, z, z,
-//         z, h, z,
-//         z, z, o,
-//     );
-//     let v = &na::Vector3::new(
-//         p.x as f32,
-//         p.y as f32,
-//         0.0
-//     );
-
-//     scale(1
-//     // let raster_to_ndc = na::Matrix4
-//     let x = (pras.x as f32) / (w as f32);
-//     let y = (pras.y as f32) / (h as f32);
-//     na::Vector3::new(x, y, 0.0)
-// }
-
-// // pub fn ndc_to_
