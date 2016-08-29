@@ -13,6 +13,7 @@ pub trait Intersectable<T: Clone> {
     fn intersections(&self, ray: &Ray<T>) -> Vec<T>;
 }
 
+#[derive(Debug)]
 pub struct Ray<T> {
     _origin: na::Point4<T>,
     _direction: na::Vector4<T>,
