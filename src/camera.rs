@@ -7,7 +7,7 @@ use super::ray;
 use super::types::{ Real };
 
 
-struct OrthographicCamera {
+pub struct OrthographicCamera {
     _camera_to_world: na::Matrix4<Real>,
     _raster_to_camera: na::Matrix4<Real>,
     _dim: (usize, usize),
@@ -18,8 +18,8 @@ impl OrthographicCamera {
         let ratio = (dim.0 as Real) / (dim.1 as Real);
         OrthographicCamera {
             _camera_to_world: camera_to_world(
-                &na::Vector3::new(0.0, 0.0, 5.0),
-                &na::Vector3::new(0.0, 0.0, 0.0),
+                &na::Point3::new(0.0, 0.0, 5.0),
+                &na::Point3::new(0.0, 0.0, 0.0),
                 &na::Vector3::new(0.0, 1.0, 0.0)
             ),
             _raster_to_camera: raster_to_ndc(dim)
@@ -30,21 +30,17 @@ impl OrthographicCamera {
     }
 
     pub fn generate_ray(&self, x: usize, y: usize) -> ray::Ray<Real> {
-        let p1 = na::Point4::<Real>::new(x as Real, y as Real, 0.0, 1.0);
-        let p2 = p1 * self._raster_to_camera;
-        let p3 = p2 * self._camera_to_world;
+        let o1 = na::Point4::<Real>::new(x as Real, y as Real, 0.0, 1.0);
+        let o2 = o1 * self._raster_to_camera;
+        let o3 = o2 * self._camera_to_world;
 
         let d1 = na::Vector4::<Real>::new(0.0, 0.0, -1.0, 0.0);
         let d2 = d1 * self._raster_to_camera;
         let d3 = d2 * self._camera_to_world;
 
-        // let omg: na::Vector3<Real> = na::Vector3::<Real>::from(&d3);
-        // d3.from();
-
-        // ray::Ray::new(p3.from_homogeneous(), d3.from_homogeneous())
         ray::Ray::new(
-            &na::Point3::new(0.0, 0.0, 0.0),
-            &na::Vector3::new(0.0, 0.0, 0.0)
+            &linear::p3_from_p4(&o3),
+            &linear::v3_from_v4(&d3)
         )
     }
 }
@@ -64,16 +60,17 @@ pub fn screen_to_ortho() -> na::Matrix4<Real> {
     na::new_identity(4)
 }
 
-pub fn camera_to_world(eye: &na::Vector3<Real>,
-                       center: &na::Vector3<Real>,
+pub fn camera_to_world(eye: &na::Point3<Real>,
+                       center: &na::Point3<Real>,
                        up: &na::Vector3<Real>)
 //
                        -> na::Matrix4<Real> {
     let d = *center - *eye;
     let f = na::normalize(&d);
     let s = na::normalize(&na::cross(&f, up));
-    let u = na::cross(&f, &s);
-    linear::mfrom4fv(&s, &u, &-f, &-*eye)
+    let u = na::cross(&s, &f);
+    let t = linear::v3_from_p3(eye);
+    linear::m4_from_4v3(&s, &u, &-f, &-t)
 }
 
 // pub fn raster_to_ndc(width: u16, height: u16, p: &na::Vector3<u16>)
