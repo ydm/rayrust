@@ -1,4 +1,5 @@
 use std::default::Default;
+use std::ops::Mul;
 
 
 #[derive(Clone, Copy, Debug)]
@@ -20,5 +21,16 @@ impl Color {
 impl Default for Color {
     fn default() -> Self {
         Color { _channels: [0.0; 4] }
+    }
+}
+
+impl Mul<f32> for Color {
+    type Output = Color;
+
+    fn mul(self, rhs: f32) -> Self::Output {
+        Color::new(self._channels[0] * rhs,
+                   self._channels[1] * rhs,
+                   self._channels[2] * rhs,
+                   self._channels[3] * rhs)
     }
 }

@@ -14,6 +14,10 @@ impl<T: Copy> Sphere<T> {
     pub fn new(center: &na::Point4<T>, radius: T) -> Sphere<T> {
         Sphere { _center: *center, _radius: radius }
     }
+
+    pub fn center(&self) -> &na::Point4<T> {
+        &self._center
+    }
 }
 
 impl ray::Intersectable<Real> for Sphere<Real> {
@@ -23,16 +27,16 @@ impl ray::Intersectable<Real> for Sphere<Real> {
         // Solve the quadratic equation
         //
         // a is 1 by definition
-        let b = na::dot(&v, ray.direction());
+        let b = -na::dot(&v, ray.direction());
         let c = v.norm_squared() - self._radius;
         let d = 4.0 * (b*b - c);
 
         match d {
-            _ if d < 0.0 => vec![],    // zero
-                     0.0 => vec![-b],  // one
-                       _ => {          // two
+            _ if d < 0.0 => vec![],   // zero
+                     0.0 => vec![b],  // one
+                       _ => {         // two
                            let k = d.sqrt() / 2.0;
-                           vec![-b-k, -b+k]
+                           vec![b-k, b+k]
                        }
         }
     }
