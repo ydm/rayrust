@@ -64,9 +64,9 @@ pub fn camera_to_world(eye: &na::Point4<Real>,
                        -> na::Matrix4<Real> {
     let d = *center - *eye;
     let f = na::normalize(&d);
-    let s = na::normalize(&na::cross(&f, up));
-    let u = na::cross(&s, &f);
-    linear::mfrom4v(&s, &u, &-f, &-eye.to_vector())
+    let s = na::normalize(&linear::cross(&f, up));
+    let u = linear::cross(&s, &f);
+    linear::m4v(&s, &u, &-f, &-eye.to_vector())
 }
 
 // pub fn raster_to_ndc(width: u16, height: u16, p: &na::Vector3<u16>)

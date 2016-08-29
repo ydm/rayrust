@@ -22,8 +22,8 @@ fn main() {
     // stuff::texture(&mut img, f);
 
     let cam = camera::OrthographicCamera::new((width, height));
-    let sphere1 = primitive::Sphere::new(&na::Point3::new(0.0, 0.0,  0.0), 0.5);
-    let sphere2 = primitive::Sphere::new(&na::Point3::new(0.5, 0.0, -5.0), 0.5);
+    let sphere1 = primitive::Sphere::new(&na::Point4::new(0.0, 0.0,  0.0, 1.0), 0.5);
+    let sphere2 = primitive::Sphere::new(&na::Point4::new(0.5, 0.0, -5.0, 1.0), 0.5);
 
     let background = color::Color::new(1.0, 1.0, 1.0, 1.0);
     let color1 = color::Color::new(1.0, 0.0, 0.0, 1.0);

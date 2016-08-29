@@ -6,19 +6,19 @@ use super::types::{ Real };
 
 
 pub struct Sphere<T> {
-    _center: na::Point3<T>,
+    _center: na::Point4<T>,
     _radius: T,
 }
 
 impl<T: Copy> Sphere<T> {
-    pub fn new(center: &na::Point3<T>, radius: T) -> Sphere<T> {
+    pub fn new(center: &na::Point4<T>, radius: T) -> Sphere<T> {
         Sphere { _center: *center, _radius: radius }
     }
 }
 
 impl ray::Intersectable<Real> for Sphere<Real> {
     fn intersections(&self, ray: &ray::Ray<Real>) -> Vec<Real> {
-        let v: na::Vector3<Real> = *ray.origin() - self._center;
+        let v: na::Vector4<Real> = *ray.origin() - self._center;
 
         // Solve the quadratic equation
         //

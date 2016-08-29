@@ -6,16 +6,21 @@ extern crate nalgebra as na;
 use na::{ ApproxEq };
 
 use rayrust::camera;
+use rayrust::linear;
 use rayrust::types::{ Real, RealConsts };
 
 
+fn p(x: Real, y: Real, z: Real) -> na::Point4<Real> {
+    na::Point4::<Real>::new(x, y, z, 1.0)
+}
+
 fn v(x: Real, y: Real, z: Real) -> na::Vector4<Real> {
-    na::Vector4::<Real>::new(x, y, z, 1.0)
+    na::Vector4::<Real>::new(x, y, z, 0.0)
 }
 
 #[test]
 fn camera_to_world() {
-    let eye = na::Point3::<Real>::new(0.0, 0.0, 5.0);
+    let eye = p(0.0, 0.0, 5.0);
     let center = na::Point3::<Real>::new(0.0, 0.0, 0.0);
     let up = na::Vector3::<Real>::new(0.0, 1.0, 0.0);
     let M = camera::camera_to_world(&eye, &center, &up);
