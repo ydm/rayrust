@@ -49,6 +49,10 @@ fn shade(light_position: &na::Point4<Real>,
 
 
 fn main() {
+    
+}
+
+fn main1() {
     let width = 800;
     let height = 600;
     let mut img = image::Image::new(width, height);
@@ -65,7 +69,7 @@ fn main() {
     let cam = camera::OrthographicCamera::new((width, height));
     let light = lin::p(3.0, 2.0, 5.0);
     let sphere1 = primitive::Sphere::new(&lin::p(0.0, 0.0,  0.0), 0.5);
-    let sphere2 = primitive::Sphere::new(&lin::p(0.5, -0.20, -5.0), 0.20);
+    let sphere2 = primitive::Sphere::new(&lin::p(0.5, 0.0, -5.0), 0.5);
 
     // Colors
     let background = color::Color::new(1.0, 1.0, 1.0, 1.0);
