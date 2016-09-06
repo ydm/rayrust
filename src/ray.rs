@@ -1,6 +1,8 @@
 extern crate nalgebra as na;
 
 use std::clone::Clone;
+use self::na::{ Point3, Vector3 };
+
 
 pub trait Intersectable<T: Clone> {
     fn intersection(&self, ray: &Ray<T>) -> Option<T> {
@@ -15,23 +17,23 @@ pub trait Intersectable<T: Clone> {
 
 #[derive(Debug)]
 pub struct Ray<T> {
-    _origin: na::Point4<T>,
-    _direction: na::Vector4<T>,
+    _origin: Point3<T>,
+    _direction: Vector3<T>,
 }
 
 impl<T: Copy> Ray<T> {
-    pub fn new(o: &na::Point4<T>, d: &na::Vector4<T>) -> Ray<T> {
+    pub fn new(o: &Point3<T>, d: &Vector3<T>) -> Ray<T> {
         Ray {
             _origin: *o,
             _direction: *d,
         }
     }
 
-    pub fn origin(&self) -> &na::Point4<T> {
+    pub fn origin(&self) -> &Point3<T> {
         &self._origin
     }
 
-    pub fn direction(&self) ->&na::Vector4<T> {
+    pub fn direction(&self) ->&Vector3<T> {
         &self._direction
     }
 }

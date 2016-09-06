@@ -1,5 +1,6 @@
 extern crate nalgebra as na;
 
+use self::na::{ Point3, Point4, Vector3, Vector4 };
 use super::lin;
 use super::ray;
 use super::types::{ Real };
@@ -28,15 +29,16 @@ impl OrthographicCamera {
     }
 
     pub fn generate_ray(&self, x: usize, y: usize) -> ray::Ray<Real> {
-        let o1 = lin::p(x as Real, y as Real, 0.0);
+        let o1 = Point4::new(x as Real, y as Real, 0.0, 1.0);
         let o2 = o1 * self._raster_to_camera;
         let o3 = o2 * self._camera_to_world;
 
-        let d1 = lin::v(0.0, 0.0, -1.0);
+        let d1 = Vector4::new(0.0, 0.0, -1.0, 0.0);
         let d2 = d1 * self._raster_to_camera;
         let d3 = d2 * self._camera_to_world;
 
-        ray::Ray::new(&o3, &d3)
+        ray::Ray::new(&na::from_homogeneous(&o3),
+                      &na::from_homogeneous(&d3))
     }
 }
 
