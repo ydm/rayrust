@@ -3,11 +3,9 @@ extern crate rayrust;
 
 use std::fs;
 use self::na::{ Point3, Vector3 };
-// use rayrust::stuff;
 use rayrust::camera;
 use rayrust::color;
 use rayrust::image;
-use rayrust::lin;
 use rayrust::primitive;
 use rayrust::ray::{ self, Intersectable };
 use rayrust::types::{ Real };
@@ -33,7 +31,7 @@ fn shade(light_position: &na::Point3<Real>,
     let hit = *ray.origin() + *ray.direction() * intersection;
     // TODO: Това в тая посока ли трябва да е?
     let normal = na::normalize(&(hit - *sphere_center));
-    let inc = na::normalize(light_position - hit);
+    let inc = na::normalize(&(*light_position - hit));
     let d = diffuse(&inc,
                     &Vector3::new(0.0, 0.0, 0.0),
                     &normal);
@@ -64,8 +62,8 @@ fn main() {
     // return;
 
     // Scene
-    let cam = camera::OrthographicCamera::new((width, height));
-    let light = lin::p(3.0, 2.0, 5.0);
+    let cam = camera::OrthographicCamera::new(width, height);
+    let light = Point3::new(3.0 as Real, 2.0, 5.0);
     let sphere1 = primitive::Sphere::new(&Point3::new(0.0, 0.0,  0.0), 0.5);
     let sphere2 = primitive::Sphere::new(&Point3::new(0.5, 0.0, -5.0), 0.5);
 

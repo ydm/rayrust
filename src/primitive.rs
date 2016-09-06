@@ -1,22 +1,22 @@
 extern crate nalgebra as na;
 
-use self::na::{ Point3, Vector3 };
+use self::na::{ Point3 };
 use self::na::Norm;
 use super::ray;
 use super::types::{ Real };
 
 
 pub struct Sphere<T> {
-    _center: na::Point3<T>,
+    _center: Point3<T>,
     _radius: T,
 }
 
 impl<T: Copy> Sphere<T> {
-    pub fn new(center: &na::Point3<T>, radius: T) -> Sphere<T> {
+    pub fn new(center: &Point3<T>, radius: T) -> Sphere<T> {
         Sphere { _center: *center, _radius: radius }
     }
 
-    pub fn center(&self) -> &na::Point3<T> {
+    pub fn center(&self) -> &Point3<T> {
         &self._center
     }
 }
