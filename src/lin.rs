@@ -1,4 +1,4 @@
-use na;
+use na::{ Point4, Vector3, Matrix4 };
 use types::{ Real };
 
 
@@ -8,7 +8,7 @@ use types::{ Real };
 
 /// Negate just the x, y, z components of a point, leaving its w value
 /// unchanged.
-pub fn negp(p: &na::Point4<Real>) -> na::Point4<Real> {
+pub fn negp(p: &Point4<Real>) -> Point4<Real> {
     let mut ans = -*p;
     ans[3] = p[3];
     ans
@@ -19,12 +19,12 @@ pub fn negp(p: &na::Point4<Real>) -> na::Point4<Real> {
 // Matrix constructors
 // ------------------------
 
-pub fn m3v(x: &na::Vector3<Real>,
-           y: &na::Vector3<Real>,
-           z: &na::Vector3<Real>)
+pub fn m3v(x: &Vector3<Real>,
+           y: &Vector3<Real>,
+           z: &Vector3<Real>)
 //
-           -> na::Matrix4<Real> {
-    na::Matrix4::new(
+           -> Matrix4<Real> {
+    Matrix4::new(
         x.x, x.y, x.z, 0.0,
         y.x, y.y, y.z, 0.0,
         z.x, z.y, z.z, 0.0,
@@ -32,13 +32,13 @@ pub fn m3v(x: &na::Vector3<Real>,
     )
 }
 
-pub fn m4v(x: &na::Vector3<Real>,
-           y: &na::Vector3<Real>,
-           z: &na::Vector3<Real>,
-           t: &na::Vector3<Real>)
+pub fn m4v(x: &Vector3<Real>,
+           y: &Vector3<Real>,
+           z: &Vector3<Real>,
+           t: &Vector3<Real>)
 //
-           -> na::Matrix4<Real> {
-    na::Matrix4::new(
+           -> Matrix4<Real> {
+    Matrix4::new(
         x.x, x.y, x.z, 0.0,
         y.x, y.y, y.z, 0.0,
         z.x, z.y, z.z, 0.0,
@@ -51,10 +51,10 @@ pub fn m4v(x: &na::Vector3<Real>,
 // Matrix helpers
 // ------------------------
 
-pub fn scale3f(x: Real, y: Real, z: Real) -> na::Matrix4<Real> {
+pub fn scale3f(x: Real, y: Real, z: Real) -> Matrix4<Real> {
     let l = 1.0;
     let o = 0.0;
-    na::Matrix4::new(
+    Matrix4::new(
         x, o, o, o,
         o, y, o, o,
         o, o, z, o,
@@ -62,10 +62,10 @@ pub fn scale3f(x: Real, y: Real, z: Real) -> na::Matrix4<Real> {
     )
 }
 
-pub fn translate3f(x: Real, y: Real, z: Real) -> na::Matrix4<Real> {
+pub fn translate3f(x: Real, y: Real, z: Real) -> Matrix4<Real> {
     let l = 1.0;
     let o = 0.0;
-    na::Matrix4::new(
+    Matrix4::new(
         l, o, o, o,
         o, l, o, o,
         o, o, l, o,

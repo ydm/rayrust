@@ -15,16 +15,16 @@ use rayrust::types::{ Real };
 //
 // ------------------------
 
-fn diffuse(inc: &na::Vector3<Real>,
-           _: &na::Vector3<Real>,
-           normal: &na::Vector3<Real>)
+fn diffuse(inc: &Vector3<Real>,
+           _: &Vector3<Real>,
+           normal: &Vector3<Real>)
 //
            -> Real {
     na::dot(inc, normal)
 }
 
-fn shade(light_position: &na::Point3<Real>,
-         sphere_center: &na::Point3<Real>,
+fn shade(light_position: &Point3<Real>,
+         sphere_center: &Point3<Real>,
          sphere_color: &color::Color,
          ray: &ray::Ray<Real>,
          intersection: Real) -> color::Color {

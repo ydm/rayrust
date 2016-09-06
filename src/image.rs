@@ -17,6 +17,11 @@ impl ToRGBA255 for color::Color {
     }
 }
 
+
+// ------------------------
+// Image
+// ------------------------
+
 pub struct Image {
     _data: Vec<color::Color>,
     _width: usize,
