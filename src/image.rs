@@ -1,5 +1,5 @@
 use std::io;
-use super::color;
+use color;
 
 
 /// Types that can be converted to a [u8; 4] RGBA.

@@ -1,9 +1,8 @@
-extern crate nalgebra as na;
+use na;
+use na::{ Norm, Point3 };
 
-use self::na::{ Point3 };
-use self::na::Norm;
-use super::ray;
-use super::types::{ Real };
+use ray;
+use types::{ Real };
 
 
 pub struct Sphere<T> {

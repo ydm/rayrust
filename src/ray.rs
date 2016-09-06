@@ -1,7 +1,5 @@
-extern crate nalgebra as na;
-
 use std::clone::Clone;
-use self::na::{ Point3, Vector3 };
+use na::{ Point3, Vector3 };
 
 
 pub trait Intersectable<T: Clone> {

@@ -1,9 +1,9 @@
-extern crate nalgebra as na;
+use na;
+use na::{ Point3, Vector3 };
 
-use self::na::{ Point3, Vector3 };
-use super::lin;
-use super::ray;
-use super::types::{ Real };
+use lin;
+use ray;
+use types::{ Real };
 
 
 pub struct OrthographicCamera {

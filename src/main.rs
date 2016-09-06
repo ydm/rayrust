@@ -2,8 +2,8 @@ extern crate nalgebra as na;
 extern crate rayrust;
 
 use std::fs;
-use self::na::{ Point3, Vector3 };
-use rayrust::camera;
+use na::{ Point3, Vector3 };
+use rayrust::camera::ortho;
 use rayrust::color;
 use rayrust::image;
 use rayrust::primitive;
@@ -62,7 +62,7 @@ fn main() {
     // return;
 
     // Scene
-    let cam = camera::OrthographicCamera::new(width, height);
+    let cam = ortho::OrthographicCamera::new(width, height);
     let light = Point3::new(3.0 as Real, 2.0, 5.0);
     let sphere1 = primitive::Sphere::new(&Point3::new(0.0, 0.0,  0.0), 0.5);
     let sphere2 = primitive::Sphere::new(&Point3::new(0.5, 0.0, -5.0), 0.5);

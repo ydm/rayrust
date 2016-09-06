@@ -1,5 +1,5 @@
-use super::color;
-use super::image;
+use color;
+use image;
 
 
 /// Example:

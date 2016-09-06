@@ -1,6 +1,5 @@
-extern crate nalgebra as na;
-
-use super::types::{ Real };
+use na;
+use types::{ Real };
 
 
 // ------------------------
