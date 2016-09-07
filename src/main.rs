@@ -4,6 +4,7 @@ extern crate rayrust;
 use std::fs;
 use na::{ Point3, Vector3 };
 use rayrust::camera::ortho;
+use rayrust::camera::persp;
 use rayrust::color;
 use rayrust::image;
 use rayrust::primitive;
@@ -47,6 +48,17 @@ fn shade(light_position: &Point3<Real>,
 //
 // ------------------------
 
+fn main0() {
+    let m = na::Matrix4::new(
+        2f32, 0.0, 0.0, 0.0,
+         0.0, 2.0, 0.0, 0.0,
+         0.0, 0.0, 1.0, 0.0,
+         0.0, 0.0, 0.0, 2.0
+    );
+    let p = na::Point4::new(1f32, 0.0, 0.0, 1.0);
+    let res: na::Point4<f32> = m * p;
+    println!("{:?}", res);
+}
 
 fn main() {
     let width = 800;
@@ -62,10 +74,11 @@ fn main() {
     // return;
 
     // Scene
-    let cam = ortho::OrthographicCamera::new(width, height);
+    // let cam = ortho::OrthographicCamera::new(width, height);
+    let cam = persp::PerspectiveCamera::new(width, height);
     let light = Point3::new(3.0 as Real, 2.0, 5.0);
-    let sphere1 = primitive::Sphere::new(&Point3::new(0.0, 0.0,  0.0), 0.5);
-    let sphere2 = primitive::Sphere::new(&Point3::new(0.5, 0.0, -5.0), 0.5);
+    let sphere1 = primitive::Sphere::new(&Point3::new(0.0, 0.0,  0.0), 1.0);
+    let sphere2 = primitive::Sphere::new(&Point3::new(0.5, 0.0, -5.0), 1.0);
 
     // Colors
     let background = color::Color::new(1.0, 1.0, 1.0, 1.0);

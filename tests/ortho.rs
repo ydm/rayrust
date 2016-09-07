@@ -5,7 +5,6 @@ extern crate nalgebra as na;
 
 use na::{ ApproxEq, Point3, Point4, Vector3 };
 
-
 use rayrust::camera::ortho;
 use rayrust::types::{ RealConsts };
 
@@ -15,7 +14,7 @@ use rayrust::types::{ RealConsts };
 // ------------------------
 
 #[test]
-fn camera_to_world() {
+fn camera_to_world_0() {
     let eye = Point3::new(0.0, 0.0, 5.0);
     let center = Point3::new(0.0, 0.0, 0.0);
     let up = Vector3::new(0.0, 1.0, 0.0);
@@ -29,7 +28,7 @@ fn camera_to_world() {
 }
 
 #[test]
-fn camera_to_world1() {
+fn camera_to_world_1() {
     let eye = Point3::new(5.0, 5.0, 0.0);
     let center = Point3::new(0.0, 0.0, 0.0);
     let up = Vector3::new(0.0, 1.0, 0.0);
@@ -49,13 +48,13 @@ fn ndc_to_screen() {
     let m = ortho::ndc_to_screen(2.0);
 
     let u = Point4::new(0.0, 0.0, 0.0, 1.0);
-    assert_approx_eq!(u*m, Point4::new(-2.0, -1.0, 0.0, 1.0));
+    assert_approx_eq!(u*m, Point4::new(-2.0, 1.0, 0.0, 1.0));
 
     let p = Point4::new(0.5, 0.5, 0.0, 1.0);
     assert_approx_eq!(p*m, Point4::new(0.0, 0.0, 0.0, 1.0));
 
     let r = Point4::new(1.0, 1.0, 0.0, 1.0);
-    assert_approx_eq!(r*m, Point4::new(2.0, 1.0, 0.0, 1.0));
+    assert_approx_eq!(r*m, Point4::new(2.0, -1.0, 0.0, 1.0));
 }
 
 #[test]
@@ -74,16 +73,19 @@ fn raster_to_ndc() {
 
 #[test]
 fn raster_to_screen() {
-    let m = ortho::raster_to_ndc(800, 400) * ortho::ndc_to_screen(2.0);
+    let width = 800;
+    let height = 400;
+    let aspect = 800 as f32 / height as f32;
+    let m = ortho::raster_to_ndc(width, height) * ortho::ndc_to_screen(aspect);
 
     let u = Point4::new(0.0, 0.0, 0.0, 1.0);
-    assert_approx_eq!(u*m, Point4::new(-2.0, -1.0, 0.0, 1.0));
+    assert_approx_eq!(u*m, Point4::new(-2.0, 1.0, 0.0, 1.0));
 
     let p = Point4::new(400.0, 200.0, 0.0, 1.0);
     assert_approx_eq!(p*m, Point4::new(0.0, 0.0, 0.0, 1.0));
 
     let r = Point4::new(800.0, 400.0, 0.0, 1.0);
-    assert_approx_eq!(r*m, Point4::new(2.0, 1.0, 0.0, 1.0));
+    assert_approx_eq!(r*m, Point4::new(2.0, -1.0, 0.0, 1.0));
 }
 
 #[test]

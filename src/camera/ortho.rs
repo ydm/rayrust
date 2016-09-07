@@ -7,22 +7,22 @@ use types::{ Real };
 
 
 pub struct OrthographicCamera {
-    _camera_to_world: Matrix4<Real>,
     _raster_to_camera: Matrix4<Real>,
+    _camera_to_world: Matrix4<Real>,
 }
 
 impl OrthographicCamera {
     pub fn new(width: usize, height: usize) -> OrthographicCamera {
         let ratio = (width as Real) / (height as Real);
         OrthographicCamera {
+            _raster_to_camera: raster_to_ndc(width, height)
+                * ndc_to_screen(ratio)
+                * screen_to_ortho(),
             _camera_to_world: camera_to_world(
                 &Point3::new(0.0, 0.0, 5.0),
                 &Point3::new(0.0, 0.0, 0.0),
                 &Vector3::new(0.0, 1.0, 0.0)
             ),
-            _raster_to_camera: raster_to_ndc(width, height)
-                * ndc_to_screen(ratio)
-                * screen_to_ortho(),
         }
     }
 
@@ -47,16 +47,15 @@ pub fn raster_to_ndc(width: usize, height: usize) -> Matrix4<Real> {
 }
 
 pub fn ndc_to_screen(ratio: Real) -> Matrix4<Real> {
-    lin::translate3f(-0.5, -0.5, 0.0) * lin::scale3f(2.0 * ratio, 2.0, 1.0)
+    lin::translate3f(-0.5, -0.5, 0.0) * lin::scale3f(2.0 * ratio, -2.0, 1.0)
 }
 
 pub fn screen_to_ortho() -> Matrix4<Real> {
-    // TODO: Expand the view!
     Matrix4::new(
-        1.0,  0.0, 0.0, 0.0,  // x
-        0.0, -1.0, 0.0, 0.0,  // y
-        0.0,  0.0, 1.0, 0.0,  // z
-        0.0,  0.0, 0.0, 1.0,  // w
+        1.0, 0.0, 0.0, 0.0,  // x
+        0.0, 1.0, 0.0, 0.0,  // y
+        0.0, 0.0, 1.0, 0.0,  // z
+        0.0, 0.0, 0.0, 1.0,  // w
     )
 }
 
