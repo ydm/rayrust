@@ -5,6 +5,7 @@ use std::fs;
 use na::{ Point3, Vector3 };
 use rayrust::camera::ortho;
 use rayrust::camera::persp;
+use rayrust::camera::common::{ Camera };
 use rayrust::color;
 use rayrust::image;
 use rayrust::primitive;
@@ -27,7 +28,7 @@ fn diffuse(inc: &Vector3<Real>,
 fn shade(light_position: &Point3<Real>,
          sphere_center: &Point3<Real>,
          sphere_color: &color::Color,
-         ray: &ray::Ray<Real>,
+         ray: &ray::Ray,
          intersection: Real) -> color::Color {
     let hit = *ray.origin() + *ray.direction() * intersection;
     // TODO: Това в тая посока ли трябва да е?
@@ -50,7 +51,7 @@ fn shade(light_position: &Point3<Real>,
 
 fn main0() {
     let m = na::Matrix4::new(
-        2f32, 0.0, 0.0, 0.0,
+        2f32, 1.0, 0.0, 0.0,
          0.0, 2.0, 0.0, 0.0,
          0.0, 0.0, 1.0, 0.0,
          0.0, 0.0, 0.0, 2.0
@@ -58,6 +59,7 @@ fn main0() {
     let p = na::Point4::new(1f32, 0.0, 0.0, 1.0);
     let res: na::Point4<f32> = m * p;
     println!("{:?}", res);
+    println!("{:?}", p * m);
 }
 
 fn main() {
@@ -74,8 +76,11 @@ fn main() {
     // return;
 
     // Scene
-    // let cam = ortho::OrthographicCamera::new(width, height);
-    let cam = persp::PerspectiveCamera::new(width, height);
+    let eye    = Point3 ::new(0.0 as Real, 0.0, 5.0);
+    let center = Point3 ::new(0.0 as Real, 0.0, 0.0);
+    let up     = Vector3::new(0.0 as Real, 1.0, 0.0);
+    let cam = ortho::OrthographicCamera::new(width, height, 2.0, &eye, &center, &up);
+    // let cam = persp::PerspectiveCamera::new(width, height);
     let light = Point3::new(3.0 as Real, 2.0, 5.0);
     let sphere1 = primitive::Sphere::new(&Point3::new(0.0, 0.0,  0.0), 1.0);
     let sphere2 = primitive::Sphere::new(&Point3::new(0.5, 0.0, -5.0), 1.0);
@@ -90,7 +95,7 @@ fn main() {
             let ray = cam.generate_ray(col, row);
 
             let mut color = background;
-            
+
             if let Some(t) = sphere1.intersection(&ray) {
                 // color = &color1;
                 color = shade(&light, sphere1.center(), &color1, &ray, t);

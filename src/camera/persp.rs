@@ -26,7 +26,7 @@ impl PerspectiveCamera {
         }
     }
 
-    pub fn generate_ray(&self, x: usize, y: usize) -> ray::Ray<Real> {
+    pub fn generate_ray(&self, x: usize, y: usize) -> ray::Ray {
         let origin = Point4::new(x as Real, y as Real, 0.0, 1.0)
             * self._raster_to_camera
             * self._camera_to_world;
@@ -101,6 +101,8 @@ pub fn screen_to_persp() -> Matrix4<Real> {
     // m
 }
 
+// pbrt 2.7.7 The look-at transformation.  pbrt uses left-hand
+// coordinate system, we use right-hand.
 pub fn camera_to_world(eye:    &Point3<Real>,
                        center: &Point3<Real>,
                        up:     &Vector3<Real>)

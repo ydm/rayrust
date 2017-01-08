@@ -1,5 +1,5 @@
 use na;
-use na::{ Norm, Point3 };
+use na::{ Point3 };
 
 use ray;
 use types::{ Real };
@@ -21,15 +21,14 @@ impl<T: Copy> Sphere<T> {
 }
 
 impl ray::Intersectable<Real> for Sphere<Real> {
-    fn intersections(&self, ray: &ray::Ray<Real>) -> Vec<Real> {
+    fn intersections(&self, ray: &ray::Ray) -> Vec<Real> {
         let v = *ray.origin() - self._center;
 
         // Solve the quadratic equation
         //
         // a is 1 by definition
         let b = -na::dot(&v, ray.direction());
-        let c = v.norm_squared() - self._radius;
-        // TODO: let c = na::norm_squared(v) - self._radius;
+        let c = na::norm_squared(&v) - self._radius;
         let d = 4.0 * (b*b - c);
 
         match d {
