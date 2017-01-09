@@ -3,14 +3,13 @@ extern crate rayrust;
 
 use std::fs;
 use na::{ Point3, Vector3 };
-use rayrust::camera::ortho;
 use rayrust::camera::persp;
 use rayrust::camera::common::{ Camera };
 use rayrust::color;
 use rayrust::image;
 use rayrust::primitive;
 use rayrust::ray::{ self, Intersectable };
-use rayrust::types::{ Real };
+use rayrust::types::{ Real, RealConsts };
 
 
 // ------------------------
@@ -49,19 +48,6 @@ fn shade(light_position: &Point3<Real>,
 //
 // ------------------------
 
-fn main0() {
-    let m = na::Matrix4::new(
-        2f32, 1.0, 0.0, 0.0,
-         0.0, 2.0, 0.0, 0.0,
-         0.0, 0.0, 1.0, 0.0,
-         0.0, 0.0, 0.0, 2.0
-    );
-    let p = na::Point4::new(1f32, 0.0, 0.0, 1.0);
-    let res: na::Point4<f32> = m * p;
-    println!("{:?}", res);
-    println!("{:?}", p * m);
-}
-
 fn main() {
     let width = 800;
     let height = 600;
@@ -79,11 +65,18 @@ fn main() {
     let eye    = Point3 ::new(0.0 as Real, 0.0, 5.0);
     let center = Point3 ::new(0.0 as Real, 0.0, 0.0);
     let up     = Vector3::new(0.0 as Real, 1.0, 0.0);
-    let cam = ortho::OrthographicCamera::new(width, height, 2.0, &eye, &center, &up);
-    // let cam = persp::PerspectiveCamera::new(width, height);
+    // let cam = ortho::OrthographicCamera::new(width, height,
+    //                                          2.0,
+    //                                          &eye, &center, &up);
+    // let alpha = (1.0 as Real / 5.0).atan() * 1.1;
+    let cam = persp::PerspectiveCamera::new(width, height,
+                                            // alpha*2.0,
+                                            RealConsts::PI / 2.0,
+                                            &eye, &center, &up);
+
     let light = Point3::new(3.0 as Real, 2.0, 5.0);
-    let sphere1 = primitive::Sphere::new(&Point3::new(0.0, 0.0,  0.0), 1.0);
-    let sphere2 = primitive::Sphere::new(&Point3::new(0.5, 0.0, -5.0), 1.0);
+    let sphere1 = primitive::Sphere::new(&Point3::new(0 as Real, 0.0,  0.0), 1.0);
+    let sphere2 = primitive::Sphere::new(&Point3::new(2 as Real, 0.0, -5.0), 1.0);
 
     // Colors
     let background = color::Color::new(1.0, 1.0, 1.0, 1.0);

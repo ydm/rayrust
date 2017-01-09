@@ -5,22 +5,36 @@ use ray;
 use types::{ Real };
 
 
-pub struct Sphere<T> {
-    _center: Point3<T>,
-    _radius: T,
+// ------------------------
+// Plane (TODO)
+// ------------------------
+
+pub struct Plane {
+    // _normal: Vector3<Real>,
+    // _d: Real,
 }
 
-impl<T: Copy> Sphere<T> {
-    pub fn new(center: &Point3<T>, radius: T) -> Sphere<T> {
+
+// ------------------------
+// Sphere
+// ------------------------
+
+pub struct Sphere {
+    _center: Point3<Real>,
+    _radius: Real,
+}
+
+impl Sphere {
+    pub fn new(center: &Point3<Real>, radius: Real) -> Sphere {
         Sphere { _center: *center, _radius: radius }
     }
 
-    pub fn center(&self) -> &Point3<T> {
+    pub fn center(&self) -> &Point3<Real> {
         &self._center
     }
 }
 
-impl ray::Intersectable<Real> for Sphere<Real> {
+impl ray::Intersectable for Sphere {
     fn intersections(&self, ray: &ray::Ray) -> Vec<Real> {
         let v = *ray.origin() - self._center;
 
@@ -32,9 +46,9 @@ impl ray::Intersectable<Real> for Sphere<Real> {
         let d = 4.0 * (b*b - c);
 
         match d {
-            _ if d < 0.0 => vec![],   // zero
-                     0.0 => vec![b],  // one
-                       _ => {         // two
+            _ if d < 0.0 => vec![],   // zero intersections
+                     0.0 => vec![b],  // one  intersection
+                       _ => {         // two  intersections
                            let k = d.sqrt() / 2.0;
                            vec![b-k, b+k]
                        }

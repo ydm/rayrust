@@ -1,16 +1,14 @@
+use na;
 use na::{ Point3, Vector3 };
 use types::{ Real };
 
 
-pub trait Intersectable<T: Clone> {
-    fn intersection(&self, ray: &Ray) -> Option<T> {
-        match self.intersections(ray).first() {
-            Some(x) => Some((*x).clone()),
-            None => None,
-        }
+pub trait Intersectable {
+    fn intersection(&self, ray: &Ray) -> Option<Real> {
+        self.intersections(ray).first().cloned()
     }
 
-    fn intersections(&self, ray: &Ray) -> Vec<T>;
+    fn intersections(&self, ray: &Ray) -> Vec<Real>;
 }
 
 #[derive(Debug)]
@@ -23,7 +21,7 @@ impl Ray {
     pub fn new(o: &Point3<Real>, d: &Vector3<Real>) -> Ray {
         Ray {
             _origin: *o,
-            _direction: *d,
+            _direction: na::normalize(d),
         }
     }
 

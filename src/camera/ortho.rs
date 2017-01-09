@@ -1,8 +1,8 @@
 use na;
-use na::{ Matrix4, Point3, Point4, Vector3, Vector4 };
+use na::{ Column, Matrix4, Point3, Point4, Vector3 };
 
 use camera::common;
-use ray;
+use ray::{ Ray };
 use types::{ Real };
 
 
@@ -36,13 +36,13 @@ impl OrthographicCamera {
     }
 }
 
-
 impl common::Camera for OrthographicCamera {
-    fn generate_ray(&self, x: usize, y: usize) -> ray::Ray {
-        let origin    = Point4 ::new(x as Real, y as Real,  0.0, 1.0);
-        let direction = Vector4::new(0 as Real,       0.0, -1.0, 0.0);
-        ray::Ray::new(&na::from_homogeneous(&(self._raster_to_world * origin)),
-                      &na::from_homogeneous(&(self._raster_to_world * direction)))
+    fn generate_ray(&self, x: usize, y: usize) -> Ray {
+        let o = Point4 ::new(x as Real, y as Real,  0.0, 1.0);
+
+        let wo =  self._raster_to_world * o;
+        let wd = -self._raster_to_world.column(2);
+
+        Ray::new(&na::from_homogeneous(&wo), &na::from_homogeneous(&wd))
     }
 }
-

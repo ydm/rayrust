@@ -2,12 +2,12 @@ use na;
 use na::{ Matrix4, Point3, Vector3 };
 
 use lin;
-use ray;
+use ray::{ Ray };
 use types::{ Real };
 
 
 pub trait Camera {
-    fn generate_ray(&self, x: usize, y: usize) -> ray::Ray;
+    fn generate_ray(&self, x: usize, y: usize) -> Ray;
     // TODO: fn generate_ray_differential()
 }
 
@@ -32,7 +32,7 @@ pub fn ndc_to_screen() -> Matrix4<Real> {
 /// Converts screen coordinates to orthographic camera coordinates.
 pub fn screen_to_ortho_camera(plane: Real, aspect: Real) -> Matrix4<Real> {
     let y: Real = plane / 2.0;
-    let x: Real = aspect * y;
+    let x: Real = y * aspect;
     let o: Real = 0.0;
     let l: Real = 1.0;
     //  x, y, z, p
@@ -41,6 +41,22 @@ pub fn screen_to_ortho_camera(plane: Real, aspect: Real) -> Matrix4<Real> {
         o, y, o, o,
         o, o, l, o,
         o, o, o, l,
+    )
+}
+
+pub fn screen_to_persp_camera(fovy: Real, aspect: Real) -> Matrix4<Real> {
+    let n = 1.0;                    // Near
+    let t = (fovy / 2.0).tan() * n; // Top
+    let r = t * aspect;             // Right
+
+    let o = 0.0;
+    let l = 1.0;
+
+    na::Matrix4::new(
+        r, o, o, o,
+        o, t, o, o,
+        o, o, l, o,
+        o, o, o, l
     )
 }
 

@@ -58,6 +58,7 @@ pub fn scale3f(x: Real, y: Real, z: Real) -> Matrix4<Real> {
 pub fn translate3f(x: Real, y: Real, z: Real) -> Matrix4<Real> {
     let l = 1.0;
     let o = 0.0;
+    //  x, y, z, p
     Matrix4::new(
         l, o, o, x,
         o, l, o, y,
