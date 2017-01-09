@@ -1,5 +1,5 @@
 use na;
-use na::{ Column, Matrix4, Point3, Point4, Vector3 };
+use na::{ Matrix4, Point3, Point4, Vector3 };
 
 use camera::common;
 use ray::{ Ray };
@@ -7,8 +7,8 @@ use types::{ Real };
 
 
 pub struct PerspectiveCamera {
-    _raster_to_camera: Matrix4<Real>,
-    _camera_to_world: Matrix4<Real>,
+    _raster_to_world: Matrix4<Real>,
+    _eye: Point3<Real>,
 }
 
 impl PerspectiveCamera {
@@ -29,25 +29,23 @@ impl PerspectiveCamera {
         //
         let aspect = (width as Real) / (height as Real);
         PerspectiveCamera {
-            _raster_to_camera: common::screen_to_persp_camera(fovy, aspect)
+            _raster_to_world: common::camera_to_world(&eye, &center, &up)
+                * common::screen_to_persp_camera(fovy, aspect)
                 * common::ndc_to_screen()
                 * common::raster_to_ndc(width, height),
-            _camera_to_world: common::camera_to_world(&eye, &center, &up),
+            _eye: *eye,
         }
     }
 }
 
 impl common::Camera for PerspectiveCamera {
     fn generate_ray(&self, x: usize, y: usize) -> Ray {
-        // Camera's location in world space
-        let wo = self._camera_to_world.column(3).to_point();
-
-        // The image point (x, y), projected on the near clipping
+        // The image point (x, y), projected onto the near clipping
         // plane (near == -1)
         let  n = Point4::new(x as Real, y as Real, -1.0, 1.0);
-        let wn = self._camera_to_world * self._raster_to_camera * n;
-        let wd = wn - wo;
-
-        Ray::new(&na::from_homogeneous(&wo), &na::from_homogeneous(&wd))
+        let w4: Point4<Real> = self._raster_to_world * n;
+        let w3: Point3<Real> = na::from_homogeneous(&w4);
+        // Ray's origin is at eye, direction is at (point - eye)
+        Ray::new(&self._eye, &(w3 - self._eye))
     }
 }

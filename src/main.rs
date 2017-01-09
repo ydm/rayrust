@@ -68,9 +68,7 @@ fn main() {
     // let cam = ortho::OrthographicCamera::new(width, height,
     //                                          2.0,
     //                                          &eye, &center, &up);
-    // let alpha = (1.0 as Real / 5.0).atan() * 1.1;
     let cam = persp::PerspectiveCamera::new(width, height,
-                                            // alpha*2.0,
                                             RealConsts::PI / 2.0,
                                             &eye, &center, &up);
 
