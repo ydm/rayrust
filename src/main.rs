@@ -62,7 +62,7 @@ fn main() {
     // return;
 
     // Scene
-    let eye    = Point3 ::new(0.0 as Real, 0.0, 5.0);
+    let eye    = Point3 ::new(0.0 as Real, 2.0, 5.0);
     let center = Point3 ::new(0.0 as Real, 0.0, 0.0);
     let up     = Vector3::new(0.0 as Real, 1.0, 0.0);
     // let cam = ortho::OrthographicCamera::new(width, height,
@@ -74,7 +74,7 @@ fn main() {
 
     let light = Point3::new(3.0 as Real, 2.0, 5.0);
     let sphere1 = primitive::Sphere::new(&Point3::new(0 as Real, 0.0,  0.0), 1.0);
-    let sphere2 = primitive::Sphere::new(&Point3::new(2 as Real, 0.0, -5.0), 1.0);
+    let sphere2 = primitive::Sphere::new(&Point3::new(2 as Real, 0.0, -2.0), 1.0);
 
     // Colors
     let background = color::Color::new(1.0, 1.0, 1.0, 1.0);
