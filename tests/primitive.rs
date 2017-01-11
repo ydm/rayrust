@@ -47,3 +47,17 @@ fn sphere_intersection_2() {
     assert_approx_eq!(ts2[1], 11.0);
     assert_eq!(ts2[0], sphere.intersection(&ray2).unwrap());
 }
+
+#[test]
+fn sphere_intersection_3() {
+    let sphere = primitive::Sphere::new(&Point3::new(0.0, 0.0, -5.0), 2.0);
+    let d = Vector3::new(0.0, 0.0, -1.0);
+
+    // Two intersections, greater radius
+    let ray2 = ray::Ray::new(&Point3::new(0.0, 0.0, 5.0), &d);
+    let ts2 = sphere.intersections(&ray2);
+    assert_eq!(ts2.len(), 2);
+    assert_approx_eq!(ts2[0],  8.0);
+    assert_approx_eq!(ts2[1], 12.0);
+    assert_eq!(ts2[0], sphere.intersection(&ray2).unwrap());
+}
