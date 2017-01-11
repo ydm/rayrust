@@ -1,14 +1,17 @@
 use na;
 use na::{ Matrix4, Point3, Vector3 };
 
+use geometry::ray::{ Ray };
 use lin;
-use ray::{ Ray };
 use types::{ Real };
+
+
+pub const NEAR: Real = -1.0;
 
 
 pub trait Camera {
     fn generate_ray(&self, x: usize, y: usize) -> Ray;
-    // TODO: fn generate_ray_differential()
+    // TODO: fn generate_ray_differential() -> x
 }
 
 /// Normalized device coordinates:
@@ -18,7 +21,7 @@ pub trait Camera {
 pub fn raster_to_ndc(width: usize, height: usize) -> Matrix4<Real> {
     let w = 1.0 / (width as Real);
     let h = 1.0 / (height as Real);
-    lin::scale3f(w, h, 1.0)
+    lin::scale2f(w, h)
 }
 
 /// Screen space:
@@ -26,38 +29,21 @@ pub fn raster_to_ndc(width: usize, height: usize) -> Matrix4<Real> {
 /// y ∈ [-1; 1]
 /// Center (0, 0) lies in the middle (both horizontal and vertical).
 pub fn ndc_to_screen() -> Matrix4<Real> {
-    lin::scale3f(2.0, -2.0, 1.0) * lin::translate3f(-0.5, -0.5, 0.0)
+    lin::scale2f(2.0, -2.0) * lin::translate2f(-0.5, -0.5)
 }
 
 /// Converts screen coordinates to orthographic camera coordinates.
 pub fn screen_to_ortho_camera(plane: Real, aspect: Real) -> Matrix4<Real> {
     let y: Real = plane / 2.0;
     let x: Real = y * aspect;
-    let o: Real = 0.0;
-    let l: Real = 1.0;
-    //  x, y, z, p
-    Matrix4::new(
-        x, o, o, o,
-        o, y, o, o,
-        o, o, l, o,
-        o, o, o, l,
-    )
+    lin::scale2f(x, y)
 }
 
 pub fn screen_to_persp_camera(fovy: Real, aspect: Real) -> Matrix4<Real> {
-    let n = 1.0;                    // Near
+    let n = NEAR.abs();             // Near
     let t = (fovy / 2.0).tan() * n; // Top
     let r = t * aspect;             // Right
-
-    let o = 0.0;
-    let l = 1.0;
-
-    na::Matrix4::new(
-        r, o, o, o,
-        o, t, o, o,
-        o, o, l, o,
-        o, o, o, l
-    )
+    lin::scale2f(r, t)
 }
 
 /// The standard look-at function.  Shamelessly copied from OpenGL's

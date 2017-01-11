@@ -2,7 +2,7 @@ use na;
 use na::{ Column, Matrix4, Point3, Point4, Vector3 };
 
 use camera::common;
-use ray::{ Ray };
+use geometry::ray::{ Ray };
 use types::{ Real };
 
 
@@ -28,10 +28,10 @@ impl OrthographicCamera {
         //
         let aspect = (width as Real) / (height as Real);
         OrthographicCamera {
-            _raster_to_world: common::camera_to_world(&eye, &center, &up)
-                * common::screen_to_ortho_camera(plane, aspect)
-                * common::ndc_to_screen()
-                * common::raster_to_ndc(width, height),
+            _raster_to_world: common::camera_to_world(&eye, &center, &up) *
+                common::screen_to_ortho_camera(plane, aspect)             *
+                common::ndc_to_screen()                                   *
+                common::raster_to_ndc(width, height),
         }
     }
 }

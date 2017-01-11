@@ -1,7 +1,7 @@
 use na;
 use na::{ Point3 };
 
-use ray;
+use geometry::ray;
 use types::{ Real };
 
 

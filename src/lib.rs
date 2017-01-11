@@ -6,6 +6,5 @@ pub mod geometry;
 pub mod image;
 pub mod lin;
 pub mod primitive;
-pub mod ray;
 pub mod stuff;
 pub mod types;

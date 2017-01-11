@@ -44,6 +44,17 @@ pub fn m4v(x: &Vector3<Real>,
 // Matrix helpers
 // ------------------------
 
+pub fn scale2f(x: Real, y: Real) -> Matrix4<Real> {
+    let l = 1.0;
+    let o = 0.0;
+    Matrix4::new(
+        x, o, o, o,
+        o, y, o, o,
+        o, o, l, o,
+        o, o, o, l
+    )
+}
+
 pub fn scale3f(x: Real, y: Real, z: Real) -> Matrix4<Real> {
     let l = 1.0;
     let o = 0.0;
@@ -51,6 +62,18 @@ pub fn scale3f(x: Real, y: Real, z: Real) -> Matrix4<Real> {
         x, o, o, o,
         o, y, o, o,
         o, o, z, o,
+        o, o, o, l
+    )
+}
+
+pub fn translate2f(x: Real, y: Real) -> Matrix4<Real> {
+    let l = 1.0;
+    let o = 0.0;
+    //  x, y, z, p
+    Matrix4::new(
+        l, o, o, x,
+        o, l, o, y,
+        o, o, l, o,
         o, o, o, l
     )
 }

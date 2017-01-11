@@ -7,9 +7,9 @@ use rayrust::camera::persp;
 // use rayrust::camera::ortho;
 use rayrust::camera::common::{ Camera };
 use rayrust::color;
+use rayrust::geometry::ray::{ self, Intersectable };
 use rayrust::image;
 use rayrust::primitive;
-use rayrust::ray::{ self, Intersectable };
 use rayrust::types::{ Real, RealConsts };
 
 
