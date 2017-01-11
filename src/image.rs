@@ -9,7 +9,7 @@ trait ToRGBA255 {
 
 impl ToRGBA255 for color::Color {
     fn rgba255(&self) -> [u8; 4] {
-        let f = |x: f32| (x * 255.0) as u8;        
+        let f = |x: f32| (x * 255.0) as u8;
         [ f(self.channels()[0]),
           f(self.channels()[1]),
           f(self.channels()[2]),
