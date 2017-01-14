@@ -4,7 +4,6 @@ pub mod camera;
 pub mod color;
 pub mod geometry;
 pub mod image;
-pub mod lin;
 pub mod primitive;
 pub mod stuff;
 pub mod types;

@@ -1,8 +1,8 @@
 use na;
 use na::{ Matrix4, Point3, Vector3 };
 
+use geometry::lin;
 use geometry::ray::{ Ray };
-use lin;
 use types::{ Real };
 
 
