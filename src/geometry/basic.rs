@@ -1,18 +1,8 @@
 use na;
 use na::{ Point3 };
 
-use geometry::ray;
+use geometry::{ shape, ray };
 use types::{ Real };
-
-
-// ------------------------
-// Plane (TODO)
-// ------------------------
-
-pub struct Plane {
-    // _normal: Vector3<Real>,
-    // _d: Real,
-}
 
 
 // ------------------------
@@ -37,8 +27,8 @@ impl Sphere {
     }
 }
 
-impl ray::Intersectable for Sphere {
-    fn intersections(&self, ray: &ray::Ray) -> Vec<Real> {
+impl shape::Shape for Sphere {
+        fn intersect(&self, ray: &ray::Ray) -> Option<Real> {
         // Ray: w + d*t
         //      * w is origin point
         //      * d is direction
@@ -63,11 +53,16 @@ impl ray::Intersectable for Sphere {
         let d = 4.0 * (h*h - c);
 
         match d {
-            _ if d < 0.0 => vec![],   // zero intersections
-                     0.0 => vec![h],  // one  intersection
-                       _ => {         // two  intersections
+            // no intersections
+            _ if d < 0.0 => None,
+            // one intersection
+                     0.0 => if ray.inside(h) { Some(h) } else { None },
+            // two intersections (d > 0)
+                       _ => {
                            let k = d.sqrt() / 2.0;
-                           vec![h-k, h+k]
+                           if      ray.inside(h - k) { Some(h - k) }
+                           else if ray.inside(h + k) { Some(h + k) }
+                           else    { None }
                        }
         }
     }

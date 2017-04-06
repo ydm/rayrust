@@ -1,5 +1,5 @@
 use na;
-use na::{ Column, Matrix4, Point3, Point4, Vector3 };
+use na::{ Matrix4, Point3, Point4, Vector3 };
 
 use camera::common;
 use geometry::ray::{ Ray };
@@ -43,6 +43,7 @@ impl common::Camera for OrthographicCamera {
         let wo =  self._raster_to_world * o;
         let wd = -self._raster_to_world.column(2);
 
-        Ray::new(&na::from_homogeneous(&wo), &na::from_homogeneous(&wd))
+        Ray::new(&Point3::from_homogeneous(wo).unwrap(),
+                 &Vector3::from_homogeneous(wd).unwrap())
     }
 }

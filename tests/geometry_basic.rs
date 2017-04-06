@@ -5,8 +5,9 @@ extern crate nalgebra as na;
 
 use na::{ ApproxEq, Point3, Vector3 };
 
-use rayrust::geometry::ray::{ self, Intersectable };
-use rayrust::primitive;
+use rayrust::geometry::basic;
+use rayrust::geometry::ray;
+use rayrust::geometry::shape::{ Shape };
 
 
 #[test]

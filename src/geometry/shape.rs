@@ -1,28 +1,31 @@
 use na;
 use na::{ Matrix4 };
 use geometry::bbox::{ BoundingBox };
-use geometry::ray::{ Hit, Ray };
+use geometry::ray::{ Ray };
 use types::{ Real };
 
 
-trait Shape {
+pub trait Shape {
+
     // Intersections
     // ------------------------
 
-    /// True if shape is intersectable, false otherwise.  intersect()
-    /// should be called if and only if this method returns true.  The
-    /// renderer assumes this method always returns a hard-coded
-    /// constant value.
-    fn can_intersect(&self) -> bool { true }
+    // /// True if shape is intersectable, false otherwise.  intersect()
+    // /// should be called if and only if this method returns true.  The
+    // /// renderer assumes this method always returns a hard-coded
+    // /// constant value.
+    // fn can_intersect(&self) -> bool { true }
 
-    // TODO: fn intersect(&self, r: Ray, &t_hit, &ray_epsilon, &differential_geometry)
+    fn intersect(&self, ray: &Ray) -> Option<Real>;
 
-    fn intersect(&self, _: Ray) -> Hit { Hit::default() }
-
-    /// Predicate function that determines whether or not an inter-
-    /// section occurs, without returning any details about the
+    /// Predicate function that determines whether or not an
+    /// intersection occurs, without returning any details about the
     /// intersection itself.
-    fn intersectp(&self, _: Ray) -> bool { true }
+    fn intersectp(&self, ray: &Ray) -> bool {
+        self.intersect(ray).is_some()
+    }
+
+    // fn intersectp(&self, _: Ray) -> bool { true }
 
     // Bounds
     // ------------------------

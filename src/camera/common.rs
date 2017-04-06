@@ -53,7 +53,9 @@ pub fn camera_to_world(eye:    &Point3<Real>,
                        up:     &Vector3<Real>) -> Matrix4<Real> {
     let d = *center - *eye;
     let f = na::normalize(&d);
-    let s = na::normalize(&na::cross(&f, up));
-    let u = na::cross(&s, &f);
-    lin::m4v(&s, &u, &-f, &eye.to_vector())
+    // let s = na::normalize(&na::cross(&f, up));
+    let s = na::normalize(&(f.cross(&up)));
+    // let u = na::cross(&s, &f);
+    let u = s.cross(&f);
+    lin::m4v(&s, &u, &-f, &eye)
 }

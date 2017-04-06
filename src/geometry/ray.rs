@@ -3,13 +3,16 @@ use na::{ Point3, Vector3 };
 use types::{ Real, RealMod };
 
 
-pub trait Intersectable {
-    fn intersection(&self, ray: &Ray) -> Option<Real> {
-        self.intersections(ray).first().cloned()
-    }
+// pub trait Intersectable {
+//     fn intersect(&self, ray: &Ray) -> Option<Real>;
 
-    fn intersections(&self, ray: &Ray) -> Vec<Real>;
-}
+//     /// Predicate function that determines whether or not an
+//     /// intersection occurs, without returning any details about the
+//     /// intersection itself.
+//     fn intersectp(&self, ray: &Ray) -> bool {
+//         self.intersect(ray).is_some()
+//     }
+// }
 
 
 // ------------------------
@@ -60,11 +63,13 @@ impl Ray {
         }
     }
 
-    pub fn origin(&self) -> &Point3<Real> {
-        &self._origin
-    }
+    #[inline] pub fn origin   (&self) -> &Point3<Real>  { &self._origin }
+    #[inline] pub fn direction(&self) -> &Vector3<Real> { &self._direction }
+    #[inline] pub fn tmin     (&self) -> Real           { self._tmin }
+    #[inline] pub fn tmax     (&self) -> Real           { self._tmax }
 
-    pub fn direction(&self) ->&Vector3<Real> {
-        &self._direction
+    #[inline]
+    pub fn inside(&self, t: Real) -> bool {
+        self._tmin <= t && t <= self._tmax
     }
 }

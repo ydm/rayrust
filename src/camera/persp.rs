@@ -43,8 +43,8 @@ impl common::Camera for PerspectiveCamera {
         // The image point (x, y), projected onto the near clipping
         // plane (near == -1)
         let  n = Point4::new(x as Real, y as Real, common::NEAR, 1.0);
-        let w4: Point4<Real> = self._raster_to_world * n;
-        let w3: Point3<Real> = na::from_homogeneous(&w4);
+        let w4 = self._raster_to_world * n;
+        let w3: Point3<Real> = Point3::from_homogeneous(&w4).unwrap();
         // Ray's origin is at eye, direction is at (point - eye)
         Ray::new(&self._eye, &(w3 - self._eye))
     }

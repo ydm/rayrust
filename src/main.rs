@@ -7,9 +7,10 @@ use rayrust::camera::persp;
 // use rayrust::camera::ortho;
 use rayrust::camera::common::{ Camera };
 use rayrust::color;
-use rayrust::geometry::ray::{ self, Intersectable };
+use rayrust::geometry::basic;
+use rayrust::geometry::ray;
+use rayrust::geometry::shape::{ Shape };
 use rayrust::image;
-use rayrust::primitive;
 use rayrust::types::{ Real, RealConsts };
 
 
@@ -74,8 +75,8 @@ fn main() {
                                             &eye, &center, &up);
 
     let light = Point3::new(3.0 as Real, 2.0, 5.0);
-    let sphere1 = primitive::Sphere::new(&Point3::new(0 as Real, 0.0,  0.0), 1.0);
-    let sphere2 = primitive::Sphere::new(&Point3::new(2 as Real, 0.0, -3.0), 1.0);
+    let sphere1 = basic::Sphere::new(&Point3::new(0 as Real, 0.0,  0.0), 1.0);
+    let sphere2 = basic::Sphere::new(&Point3::new(2 as Real, 0.0, -3.0), 1.0);
 
     // Colors
     let background = color::Color::new(1.0, 1.0, 1.0, 1.0);
@@ -88,10 +89,10 @@ fn main() {
 
             let mut color = background;
 
-            if let Some(t) = sphere1.intersection(&ray) {
+            if let Some(t) = sphere1.intersect(&ray) {
                 // color = &color1;
                 color = shade(&light, sphere1.center(), &color1, &ray, t);
-            } else if let Some(t) = sphere2.intersection(&ray) {
+            } else if let Some(t) = sphere2.intersect(&ray) {
                 color = shade(&light, sphere2.center(), &color2, &ray, t);
             }
 
