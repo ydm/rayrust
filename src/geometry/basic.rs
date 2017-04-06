@@ -28,7 +28,7 @@ impl Sphere {
 }
 
 impl shape::Shape for Sphere {
-        fn intersect(&self, ray: &ray::Ray) -> Option<Real> {
+    fn intersect(&self, ray: &ray::Ray) -> Option<Real> {
         // Ray: w + d*t
         //      * w is origin point
         //      * d is direction
@@ -40,7 +40,7 @@ impl shape::Shape for Sphere {
         //
         // Sphere points satisfy the following equation:
         // ||v + d*t|| = r , where v = w-o
-        // 
+        //
         // Thus ||d||^2 * t  + 2*v*d*t + ||v||^2 - r^2 = 0
         //
         // Now solve the quadratic equation for
@@ -56,14 +56,16 @@ impl shape::Shape for Sphere {
             // no intersections
             _ if d < 0.0 => None,
             // one intersection
-                     0.0 => if ray.inside(h) { Some(h) } else { None },
+            0.0 => if ray.inside(h) { Some(h) } else { None },
             // two intersections (d > 0)
-                       _ => {
-                           let k = d.sqrt() / 2.0;
-                           if      ray.inside(h - k) { Some(h - k) }
-                           else if ray.inside(h + k) { Some(h + k) }
-                           else    { None }
-                       }
+            _ => {
+                let k = d.sqrt() / 2.0;
+                if      ray.inside(h - k) { Some(h - k) }
+                else if ray.inside(h + k) { Some(h + k) }
+                else    { None }
+            }
         }
     }
+
+    // TODO: Other methods!
 }

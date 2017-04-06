@@ -1,31 +1,11 @@
 use na;
 use na::{ Matrix4 };
-use geometry::bbox::{ BoundingBox };
-use geometry::ray::{ Ray };
-use types::{ Real };
+use geometry::bbox::BoundingBox;
+use geometry::ray::{ Intersectable, Ray };
+use types::Real;
 
 
-pub trait Shape {
-
-    // Intersections
-    // ------------------------
-
-    // /// True if shape is intersectable, false otherwise.  intersect()
-    // /// should be called if and only if this method returns true.  The
-    // /// renderer assumes this method always returns a hard-coded
-    // /// constant value.
-    // fn can_intersect(&self) -> bool { true }
-
-    fn intersect(&self, ray: &Ray) -> Option<Real>;
-
-    /// Predicate function that determines whether or not an
-    /// intersection occurs, without returning any details about the
-    /// intersection itself.
-    fn intersectp(&self, ray: &Ray) -> bool {
-        self.intersect(ray).is_some()
-    }
-
-    // fn intersectp(&self, _: Ray) -> bool { true }
+pub trait Shape : Intersectable {
 
     // Bounds
     // ------------------------
@@ -38,16 +18,16 @@ pub trait Shape {
     /// Return a bounding box in world space./// Return a bounding box
     /// in world space.
     fn world_bound(&self) -> BoundingBox {
-        self.object_to_world() * self.object_bound()
+        self.world_from_object() * self.object_bound()
     }
 
     // Transformations
     // ------------------------
 
     /// Return the object-space to world-space transformation matrix.
-    fn object_to_world(&self) -> Matrix4<Real> { na::one() }
+    fn world_from_object(&self) -> Matrix4<Real> { na::one() }
 
-    fn world_to_object(&self) -> Matrix4<Real> { na::one() }
+    fn object_from_world(&self) -> Matrix4<Real> { na::one() }
 
     // Other
     // ------------------------

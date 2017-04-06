@@ -3,6 +3,27 @@ use na::{ Point3, Vector3 };
 use types::{ Real, RealMod };
 
 
+pub trait Intersectable {
+    // Intersections
+    // ------------------------
+
+    // /// True if shape is intersectable, false otherwise.  intersect()
+    // /// should be called if and only if this method returns true.  The
+    // /// renderer assumes this method always returns a hard-coded
+    // /// constant value.
+    // fn can_intersect(&self) -> bool { true }
+
+    fn intersect(&self, ray: &Ray) -> Option<Real>;
+
+    /// Predicate function that determines whether or not an
+    /// intersection occurs, without returning any details about the
+    /// intersection itself.
+    fn intersectp(&self, ray: &Ray) -> bool {
+        self.intersect(ray).is_some()
+    }
+}
+
+
 // pub trait Intersectable {
 //     fn intersect(&self, ray: &Ray) -> Option<Real>;
 
