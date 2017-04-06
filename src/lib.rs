@@ -1,4 +1,5 @@
 extern crate nalgebra as na;
+extern crate num_traits as num;
 
 pub mod camera;
 pub mod color;

@@ -1,4 +1,3 @@
-use na;
 use na::{ Matrix4, Point3, Point4, Vector3 };
 
 use camera::common;
@@ -28,22 +27,24 @@ impl OrthographicCamera {
         //
         let aspect = (width as Real) / (height as Real);
         OrthographicCamera {
-            _raster_to_world: common::camera_to_world(&eye, &center, &up) *
-                common::screen_to_ortho_camera(plane, aspect)             *
-                common::ndc_to_screen()                                   *
-                common::raster_to_ndc(width, height),
+            _raster_to_world: common::world_from_camera(&eye, &center, &up) *
+                common::ortho_camera_from_screen(plane, aspect)             *
+                common::screen_from_ndc()                                   *
+                common::ndc_from_raster(width, height),
         }
     }
 }
 
 impl common::Camera for OrthographicCamera {
     fn generate_ray(&self, x: usize, y: usize) -> Ray {
-        let o = Point4 ::new(x as Real, y as Real,  0.0, 1.0);
+        let o = Point4::new(x as Real, y as Real, 0.0, 1.0);
 
-        let wo =  self._raster_to_world * o;
-        let wd = -self._raster_to_world.column(2);
+        let wo =  self._raster_to_world * o;       // world origin
+        let wd = -self._raster_to_world.column(2); // world dir
 
-        Ray::new(&Point3::from_homogeneous(wo).unwrap(),
-                 &Vector3::from_homogeneous(wd).unwrap())
+        let wo3 = Point3::from_homogeneous(wo.coords).unwrap();
+        let wd3 = Vector3::from_homogeneous(wd).unwrap();
+
+        Ray::new(&wo3, &wd3)
     }
 }

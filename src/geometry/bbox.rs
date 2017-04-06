@@ -1,15 +1,9 @@
+// extern crate num_traits;
+
 use std::ops::Mul;
-use na;
 use na::{ Matrix4, Point3 };
-use types::{ Real, RealMod };
-
-
-const PMIN: Point3<Real> = Point3::new(RealMod::INFINITY,
-                                       RealMod::INFINITY,
-                                       RealMod::INFINITY);
-const PMAX: Point3<Real> = Point3::new(RealMod::NEG_INFINITY,
-                                       RealMod::NEG_INFINITY,
-                                       RealMod::NEG_INFINITY);
+use num::bounds::Bounded;
+use types::{ Real };
 
 
 pub struct BoundingBox {
@@ -26,7 +20,10 @@ impl BoundingBox {
 
 impl Default for BoundingBox {
     fn default() -> BoundingBox {
-        BoundingBox { _pmin: PMIN, _pmax: PMAX }
+        BoundingBox {
+            _pmin: Point3::max_value(),
+            _pmax: Point3::min_value(),
+        }
     }
 }
 

@@ -1,4 +1,3 @@
-use na;
 use na::{ Matrix4, Point3, Point4, Vector3 };
 
 use camera::common;
@@ -29,10 +28,10 @@ impl PerspectiveCamera {
         //
         let aspect = (width as Real) / (height as Real);
         PerspectiveCamera {
-            _raster_to_world: common::camera_to_world(&eye, &center, &up) *
-                common::screen_to_persp_camera(fovy, aspect)              *
-                common::ndc_to_screen()                                   *
-                common::raster_to_ndc(width, height),
+            _raster_to_world: common::world_from_camera(&eye, &center, &up) *
+                common::persp_camera_from_screen(fovy, aspect)              *
+                common::screen_from_ndc()                                   *
+                common::ndc_from_raster(width, height),
             _eye: *eye,
         }
     }
@@ -44,7 +43,7 @@ impl common::Camera for PerspectiveCamera {
         // plane (near == -1)
         let  n = Point4::new(x as Real, y as Real, common::NEAR, 1.0);
         let w4 = self._raster_to_world * n;
-        let w3: Point3<Real> = Point3::from_homogeneous(&w4).unwrap();
+        let w3: Point3<Real> = Point3::from_homogeneous(w4.coords).unwrap();
         // Ray's origin is at eye, direction is at (point - eye)
         Ray::new(&self._eye, &(w3 - self._eye))
     }
