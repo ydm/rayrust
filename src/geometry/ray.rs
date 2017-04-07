@@ -4,14 +4,9 @@ use types::{ Real, RealMod };
 
 
 pub trait Intersectable {
+
     // Intersections
     // ------------------------
-
-    // /// True if shape is intersectable, false otherwise.  intersect()
-    // /// should be called if and only if this method returns true.  The
-    // /// renderer assumes this method always returns a hard-coded
-    // /// constant value.
-    // fn can_intersect(&self) -> bool { true }
 
     fn intersect(&self, ray: &Ray) -> Option<Real>;
 
@@ -20,44 +15,6 @@ pub trait Intersectable {
     /// intersection itself.
     fn intersectp(&self, ray: &Ray) -> bool {
         self.intersect(ray).is_some()
-    }
-}
-
-
-// pub trait Intersectable {
-//     fn intersect(&self, ray: &Ray) -> Option<Real>;
-
-//     /// Predicate function that determines whether or not an
-//     /// intersection occurs, without returning any details about the
-//     /// intersection itself.
-//     fn intersectp(&self, ray: &Ray) -> bool {
-//         self.intersect(ray).is_some()
-//     }
-// }
-
-
-// ------------------------
-// Hit
-// ------------------------
-
-pub struct Hit {
-    _t: Real,  // Hit parameter
-    _e: Real,  // Epsilon
-    // TODO: DifferentialGeometry, ShadingGeometry
-}
-
-impl Hit {
-    pub fn new(t: Real, e: Real) -> Hit {
-        Hit { _t: t, _e: e}
-    }
-
-    pub fn t(&self) -> Real { self._t }
-    pub fn e(&self) -> Real { self._e }
-}
-
-impl Default for Hit {
-    fn default() -> Hit {
-        Hit { _t: -1.0, _e: 0.0 }
     }
 }
 
@@ -75,7 +32,7 @@ pub struct Ray {
 }
 
 impl Ray {
-    pub fn new(o: &Point3<Real>, d: &Vector3<Real>) -> Ray {
+    #[inline] pub fn new(o: &Point3<Real>, d: &Vector3<Real>) -> Ray {
         Ray {
             _origin: *o,
             _direction: na::normalize(d),
@@ -89,8 +46,9 @@ impl Ray {
     #[inline] pub fn tmin     (&self) -> Real           { self._tmin }
     #[inline] pub fn tmax     (&self) -> Real           { self._tmax }
 
+    /// Determine whether t lies between tmin and tmax.
     #[inline]
-    pub fn inside(&self, t: Real) -> bool {
+    pub fn is_inside(&self, t: Real) -> bool {
         self._tmin <= t && t <= self._tmax
     }
 }

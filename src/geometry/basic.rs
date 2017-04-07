@@ -1,7 +1,8 @@
 use na;
 use na::{ Point3 };
 
-use geometry::{ shape, ray };
+use geometry::ray::{ Intersectable, Ray };
+use geometry::shape::Shape;
 use types::{ Real };
 
 
@@ -27,8 +28,8 @@ impl Sphere {
     }
 }
 
-impl shape::Shape for Sphere {
-    fn intersect(&self, ray: &ray::Ray) -> Option<Real> {
+impl Intersectable for Sphere {
+    fn intersect(&self, ray: &Ray) -> Option<Real> {
         // Ray: w + d*t
         //      * w is origin point
         //      * d is direction
@@ -56,16 +57,18 @@ impl shape::Shape for Sphere {
             // no intersections
             _ if d < 0.0 => None,
             // one intersection
-            0.0 => if ray.inside(h) { Some(h) } else { None },
+            0.0 => if ray.is_inside(h) { Some(h) } else { None },
             // two intersections (d > 0)
             _ => {
                 let k = d.sqrt() / 2.0;
-                if      ray.inside(h - k) { Some(h - k) }
-                else if ray.inside(h + k) { Some(h + k) }
+                if      ray.is_inside(h - k) { Some(h - k) }
+                else if ray.is_inside(h + k) { Some(h + k) }
                 else    { None }
             }
         }
     }
+}
 
-    // TODO: Other methods!
+impl Shape for Sphere {
+    // TODO
 }

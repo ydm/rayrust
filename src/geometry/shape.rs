@@ -1,11 +1,11 @@
 use na;
 use na::{ Matrix4 };
 use geometry::bbox::BoundingBox;
-use geometry::ray::{ Intersectable, Ray };
+use geometry::ray::{ Intersectable };
 use types::Real;
 
 
-pub trait Shape : Intersectable {
+pub trait Shape: Intersectable {
 
     // Bounds
     // ------------------------

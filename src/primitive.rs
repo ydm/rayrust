@@ -1,12 +1,23 @@
+use geometry::ray::{ Intersectable, Ray };
 use geometry::shape::Shape;
+use types::Real;
 
 
 pub struct Primitive {
-    _shape: Shape,
+    _shape: Box<Shape>,
     // TODO: _material: Material;
 }
 
 impl Primitive {
-    #[inline] pub fn shape(&self) -> Shape { self._shape }
-    // TODO: #[inline] pub fn material(&self) -> Material { self._shape }
+    #[inline] pub fn new(shape: Box<Shape>) -> Primitive {
+        Primitive {
+            _shape: shape,
+        }
+    }
+}
+
+impl Intersectable for Primitive {
+    #[inline] fn intersect(&self, ray: &Ray) -> Option<Real> {
+        self._shape.intersect(ray)
+    }
 }

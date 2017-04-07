@@ -1,17 +1,21 @@
-use primitive::Primitive;
+use geometry::ray::{ Intersectable, Ray };
+use types::Real;
 
-pub trait Scene {
-    fn primitive(&self) -> Primitive;
-    // TODO: fn lights(&self) -> XXX;
+
+pub struct Scene {
+    _aggregate: Box<Intersectable>,
 }
 
-pub struct SceneBase {
-    // TODO: lights
-    _primitive: Primitive,
+impl Scene {
+    #[inline] pub fn new(a: Box<Intersectable>) -> Scene {
+        Scene {
+            _aggregate: a,
+        }
+    }
 }
 
-// impl Scene {
-//     // pub fn new(aggregate: &Primitive) {
-//     //     self._primitive
-//     // }
-// }
+impl Intersectable for Scene {
+    #[inline] fn intersect(&self, ray: &Ray) -> Option<Real> {
+        self._aggregate.intersect(ray)
+    }
+}
