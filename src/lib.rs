@@ -12,3 +12,5 @@ pub mod sampler;
 pub mod scene;
 pub mod stuff;
 pub mod types;
+
+pub mod monad;

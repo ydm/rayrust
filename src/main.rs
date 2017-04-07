@@ -52,6 +52,10 @@ fn shade(light_position: &Point3<Real>,
 // RenderOptions::MakeScene (api.cpp)
 // ------------------------
 
+fn make_aggregate(v: Vec<Primitive>) -> LinearAggregate {
+    LinearAggregate::new(v)
+}
+
 fn make_primitives() -> Vec<Primitive> {
     vec![
         Primitive::new(Box::new(Sphere::new(&Point3::origin(), 1.0))),
@@ -59,18 +63,14 @@ fn make_primitives() -> Vec<Primitive> {
     ]
 }
 
-#[inline]
-fn make_aggregate(v: Vec<Primitive>) -> LinearAggregate {
-    LinearAggregate::new(v)
+fn make_scene() -> Scene {
+    let prims = make_primitives();
+    let aggregate = make_aggregate(prims);
+    Scene::new(Box::new(aggregate))
 }
 
 fn make_integrator() {
-}
-
-fn make_scene() {
-    let prims = make_primitives();
-    let aggregate = make_aggregate(prims);
-    let scene = Scene::new(Box::new(aggregate));
+    let scene = make_scene();
 }
 
 

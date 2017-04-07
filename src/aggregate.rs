@@ -17,14 +17,16 @@ impl LinearAggregate {
 impl Intersectable for LinearAggregate {
     fn intersect(&self, ray: &Ray) -> Option<Real> {
         self._primitives.iter().fold(None, |memo, prim| {
-            let intersection = prim.intersect(ray);
-            match intersection {
-                Some(x) => match memo {
-                    Some(t) if t < x => memo,
-                    _                => Some(x)
-                },
-                None    => memo
+            if let Some(x) = prim.intersect(ray) {
+                if ray.is_inside(x) {
+                    return if let Some(t) = memo {
+                        Some(t.min(x))
+                    } else {
+                        Some(x)
+                    }
+                }
             }
+            memo
         })
     }
 }

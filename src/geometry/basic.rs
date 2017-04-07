@@ -53,18 +53,18 @@ impl Intersectable for Sphere {
         let c = na::norm_squared(&v) - self._radius_squared;
         let d = 4.0 * (h*h - c);
 
-        match d {
-            // no intersections
-            _ if d < 0.0 => None,
+        if d < 0.0 {
+            // no intersect
+            None
+        } else if d > 0.0 {
+            // two intersections
+            let k = d.sqrt() / 2.0;
+            if      ray.is_inside(h - k) { Some(h - k) }
+            else if ray.is_inside(h + k) { Some(h + k) }
+            else    { None }            
+        } else {
             // one intersection
-            0.0 => if ray.is_inside(h) { Some(h) } else { None },
-            // two intersections (d > 0)
-            _ => {
-                let k = d.sqrt() / 2.0;
-                if      ray.is_inside(h - k) { Some(h - k) }
-                else if ray.is_inside(h + k) { Some(h + k) }
-                else    { None }
-            }
+            if ray.is_inside(h) { Some(h) } else { None }
         }
     }
 }
