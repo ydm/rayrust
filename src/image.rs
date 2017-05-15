@@ -1,5 +1,5 @@
-use std::io;
-use color;
+use std::io::{ Result, Write};
+use color::Color;
 
 
 /// Types that can be converted to a [u8; 4] RGBA.
@@ -7,7 +7,7 @@ trait ToRGBA255 {
     fn rgba255(&self) -> [u8; 4];
 }
 
-impl ToRGBA255 for color::Color {
+impl ToRGBA255 for Color {
     fn rgba255(&self) -> [u8; 4] {
         let f = |x: f32| (x * 255.0) as u8;
         [ f(self.channels()[0]),
@@ -23,7 +23,7 @@ impl ToRGBA255 for color::Color {
 // ------------------------
 
 pub struct Image {
-    _data: Vec<color::Color>,
+    _data: Vec<Color>,
     _width: usize,
     _height: usize,
 }
@@ -31,17 +31,20 @@ pub struct Image {
 impl Image {
     pub fn new(w: usize, h: usize) -> Image {
         Image {
-            _data: vec![color::Color::default(); w * h],
+            _data: vec![Color::default(); w * h],
             _width: w,
             _height: h
         }
     }
 
+    #[inline]
     pub fn width(&self) -> usize { self._width }
+
+    #[inline]
     pub fn height(&self) -> usize { self._height }
 
-    pub fn writeppm<T>(&self, out: &mut T) -> io::Result<()>
-        where T: io::Write {
+    pub fn writeppm<T>(&self, out: &mut T) -> Result<()>
+        where T: Write {
         //
         try!(write!(out, "P6 {} {} 255 ", self._width, self._height));
         for color in &self._data {
@@ -51,7 +54,13 @@ impl Image {
         Ok(())
     }
 
-    pub fn set(&mut self, x: usize, y: usize, c: &color::Color) {
+    pub fn set(&mut self, x: usize, y: usize, c: &Color) {
         self._data[x + (y * self._width)] = *c;
     }
 }
+
+
+// ------------------------
+// Spectrum
+// ------------------------
+
