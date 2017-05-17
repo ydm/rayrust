@@ -24,14 +24,12 @@ pub struct SamplerIntegrator {
 }
 
 impl SamplerIntegrator {
-    pub fn new(camera: Box<Camera>) -> SamplerIntegrator {
-        SamplerIntegrator {
-            _camera: camera
-        }
+    pub fn new() -> SamplerIntegrator {
+        SamplerIntegrator {}
     }
 
     fn li(ray: &Ray, scene: &Scene) -> Color {
-        let o = scene.intersect(ray);
+        // let o = scene.intersect(ray);
         match scene.intersect(ray) {
             Some(x) => { let y = x / 8.0; Color::new(y, y, y, y) },
             None => Color::new(1.0, 1.0, 1.0, 1.0)
@@ -40,7 +38,7 @@ impl SamplerIntegrator {
 }
 
 impl Integrator for SamplerIntegrator {
-    fn render(&self, scene: &Scene) -> Box<Image> {
+    fn render(&self, scene: &Scene, camera: &Camera) -> Box<Image> {
         let width = 800;
         let height = 600;
 
@@ -53,7 +51,7 @@ impl Integrator for SamplerIntegrator {
         for row in 0..img.height() {
             for col in 0..img.width() {
 
-                let ray = self._camera.generate_ray(col, row);
+                let ray = camera.generate_ray(col, row);
                 let res = Self::li(&ray, scene);
                 img.set(col, row, &res);
             }

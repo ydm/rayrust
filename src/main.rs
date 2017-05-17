@@ -2,10 +2,12 @@ extern crate nalgebra as na;
 extern crate rayrust;
 
 use std::fs;
+use std::borrow::Borrow;
+
 use na::{ Point3, Vector3 };
 
 use rayrust::aggregate::LinearAggregate;
-use rayrust::camera::persp;
+use rayrust::camera::persp::{ PerspectiveCamera };
 // use rayrust::camera::ortho;
 use rayrust::camera::common::{ Camera };
 use rayrust::color::Color;
@@ -58,6 +60,22 @@ fn make_aggregate(v: Vec<Primitive>) -> Box<Intersectable> {
     Box::new(LinearAggregate::new(v))
 }
 
+fn make_camera() -> Box<Camera> {
+    // Definitely not Copy&Paste!
+    let width = 800;
+    let height = 600;
+
+    let eye    = Point3 ::new(0.0 as Real, 0.0, 5.0);
+    let center = Point3 ::new(0.0 as Real, 0.0, 0.0);
+    let up     = Vector3::new(0.0 as Real, 1.0, 0.0);
+    // let cam = ortho::OrthographicCamera::new(width, height,
+    //                                          2.0,
+    //                                          &eye, &center, &up);
+    Box::new(PerspectiveCamera::new(
+        width, height, RealConsts::PI / 2.0, &eye, &center, &up
+    ))
+}
+
 fn make_primitives() -> Vec<Primitive> {
     vec![
         Primitive::new(Box::new(Sphere::new(&Point3::origin(), 1.0))),
@@ -71,33 +89,16 @@ fn make_scene() -> Box<Scene> {
     Box::new(Scene::new(aggregate))
 }
 
-fn make_integrator() -> Box<Integrator> {
-    // Definitely not Copy&Paste!
-    let width = 800;
-    let height = 600;
-
-    let eye    = Point3 ::new(0.0 as Real, 0.0, 5.0);
-    let center = Point3 ::new(0.0 as Real, 0.0, 0.0);
-    let up     = Vector3::new(0.0 as Real, 1.0, 0.0);
-    // let cam = ortho::OrthographicCamera::new(width, height,
-    //                                          2.0,
-    //                                          &eye, &center, &up);
-    let cam = Box::new(
-        persp::PerspectiveCamera::new(width, height, RealConsts::PI / 2.0,
-                                      &eye, &center, &up)
-    );
-    Box::new(SamplerIntegrator::new(cam))
-}
-
 
 // ------------------------
 // Main
 // ------------------------
 
 fn main() {
-    let integrator = make_integrator();
     let scene = make_scene();
-    let img = integrator.render(&scene);
+    let camera = make_camera();
+    let integrator = SamplerIntegrator::new();
+    let img = integrator.render(scene.borrow(), camera.borrow());
     let mut file = fs::File::create("output.ppm").unwrap();
     img.writeppm(&mut file).expect("Failed to write image file");
 }
