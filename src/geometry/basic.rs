@@ -54,16 +54,16 @@ impl Intersectable for Sphere {
         let d = 4.0 * (h*h - c);
 
         if d < 0.0 {
-            // no intersect
+            // No intersections
             None
         } else if d > 0.0 {
-            // two intersections
+            // Two intersections
             let k = d.sqrt() / 2.0;
             if      ray.is_inside(h - k) { Some(h - k) }
             else if ray.is_inside(h + k) { Some(h + k) }
             else    { None }            
         } else {
-            // one intersection
+            // One intersection
             if ray.is_inside(h) { Some(h) } else { None }
         }
     }

@@ -1,5 +1,6 @@
 use na;
 use na::{ Point3, Vector3 };
+
 use types::{ Real, RealMod };
 
 

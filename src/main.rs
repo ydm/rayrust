@@ -10,10 +10,8 @@ use rayrust::aggregate::LinearAggregate;
 use rayrust::camera::persp::{ PerspectiveCamera };
 // use rayrust::camera::ortho;
 use rayrust::camera::common::{ Camera };
-use rayrust::color::Color;
 use rayrust::geometry::basic::Sphere;
-use rayrust::geometry::ray::{ Intersectable, Ray };
-use rayrust::image;
+use rayrust::geometry::ray::{ Intersectable };
 use rayrust::integrator::{ Integrator, SamplerIntegrator };
 use rayrust::primitive::Primitive;
 use rayrust::scene::Scene;
@@ -24,32 +22,32 @@ use rayrust::types::{ Real, RealConsts };
 //
 // ------------------------
 
-fn diffuse(inc: &Vector3<Real>,
-           _: &Vector3<Real>,
-           normal: &Vector3<Real>)
-//
-           -> Real {
-    na::dot(inc, normal)
-}
+// fn diffuse(inc: &Vector3<Real>,
+//            _: &Vector3<Real>,
+//            normal: &Vector3<Real>)
+// //
+//            -> Real {
+//     na::dot(inc, normal)
+// }
 
-fn shade(light_position: &Point3<Real>,
-         sphere_center: &Point3<Real>,
-         sphere_color: &Color,
-         ray: &Ray,
-         intersection: Real) -> Color {
-    let hit = *ray.origin() + *ray.direction() * intersection;
-    // TODO: Това в тая посока ли трябва да е?
-    let normal = na::normalize(&(hit - *sphere_center));
-    let inc = na::normalize(&(*light_position - hit));
-    let d = diffuse(&inc,
-                    &Vector3::new(0.0, 0.0, 0.0),
-                    &normal);
-    if d < 0.0 {
-        Color::default() // black
-    } else {
-        *sphere_color * d
-    }
-}
+// fn shade(light_position: &Point3<Real>,
+//          sphere_center: &Point3<Real>,
+//          sphere_color: &Color,
+//          ray: &Ray,
+//          intersection: Real) -> Color {
+//     let hit = *ray.origin() + *ray.direction() * intersection;
+//     // TODO: Това в тая посока ли трябва да е?
+//     let normal = na::normalize(&(hit - *sphere_center));
+//     let inc = na::normalize(&(*light_position - hit));
+//     let d = diffuse(&inc,
+//                     &Vector3::new(0.0, 0.0, 0.0),
+//                     &normal);
+//     if d < 0.0 {
+//         Color::default() // black
+//     } else {
+//         *sphere_color * d
+//     }
+// }
 
 
 // ------------------------

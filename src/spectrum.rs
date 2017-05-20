@@ -1,6 +1,6 @@
-use types::Real;
+use color::Color;
 
 
-// pub trait Spectrum {
-//     // Real 
-// }
+pub trait Spectrum {
+    fn to_color(&self) -> Color;
+}

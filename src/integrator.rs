@@ -10,6 +10,7 @@ use scene::Scene;
 // ------------------------
 
 pub trait Integrator {
+    // TODO: Should return a Film?
     fn render(&self, scene: &Scene, camera: &Camera) -> Box<Image>;
 }
 
@@ -19,8 +20,7 @@ pub trait Integrator {
 // ------------------------
 
 pub struct SamplerIntegrator {
-    // _camera: Box<Camera>,
-    // TODO: Also has sampler
+    // TODO: Aggregates a sampler!
 }
 
 impl SamplerIntegrator {
