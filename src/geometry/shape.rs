@@ -27,6 +27,7 @@ pub trait Shape: Intersectable {
     /// Return the object-space to world-space transformation matrix.
     fn world_from_object(&self) -> Matrix4<Real> { na::one() }
 
+    /// Return the world-space to object-space transformation matrix.
     fn object_from_world(&self) -> Matrix4<Real> { na::one() }
 
     // Other

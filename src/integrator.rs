@@ -42,7 +42,7 @@ impl Integrator for SamplerIntegrator {
         let width = 800;
         let height = 600;
 
-        // for each tile
+        // multithreaded for each tile
         //   for each sample, ray & differentials
         //     let camera_sample = sampler.get_camera_sample()
         //     let ray & diff = camera.gen(camera_sample)

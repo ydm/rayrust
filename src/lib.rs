@@ -12,6 +12,7 @@ pub mod light;
 pub mod primitive;
 pub mod sampler;
 pub mod scene;
+pub mod spectrum;
 pub mod stuff;
 pub mod types;
 
