@@ -1,7 +1,6 @@
 use na;
 use na::{ Point3, Vector3 };
-
-use types::{ Real, RealMod };
+use core::types::{ Real, RealMod };
 
 
 pub trait Intersectable {

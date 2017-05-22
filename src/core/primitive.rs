@@ -1,6 +1,6 @@
-use geometry::ray::{ Intersectable, Ray };
-use geometry::shape::Shape;
-use types::Real;
+use core::ray::{ Intersectable, Ray };
+use core::shape::Shape;
+use core::types::Real;
 
 
 pub struct Primitive {
@@ -14,6 +14,8 @@ impl Primitive {
             _shape: shape,
         }
     }
+
+    // TODO: compute_scattering_functions
 }
 
 impl Intersectable for Primitive {

@@ -1,8 +1,9 @@
-use camera::common::Camera;
-use color::Color;
-use geometry::ray::{ Intersectable, Ray };
-use image::Image;
-use scene::Scene;
+use core::camera::Camera;
+use core::color::Color;
+use core::image::Image;
+use core::ray::{ Intersectable, Ray };
+use core::scene::Scene;
+use core::spectrum::Spectrum;
 
 
 // ------------------------
@@ -28,11 +29,20 @@ impl SamplerIntegrator {
         SamplerIntegrator {}
     }
 
-    fn li(ray: &Ray, scene: &Scene) -> Color {
+    fn li(ray: &Ray, scene: &Scene) -> Spectrum {
         // let o = scene.intersect(ray);
         match scene.intersect(ray) {
-            Some(x) => { let y = x / 8.0; Color::new(y, y, y, y) },
-            None => Color::new(1.0, 1.0, 1.0, 1.0)
+            Some(x) => {
+                let y = x / 8.0;
+                Spectrum::new(&Color::new(y, y, y, y))
+            },
+
+            // No intersection, but radiance may be carried due to
+            // light sources without geometry.
+            None => scene.lights().iter().fold(
+                Spectrum::default(),
+                |memo, ref x| memo + x.le(ray)
+            )
         }
     }
 }
@@ -53,7 +63,7 @@ impl Integrator for SamplerIntegrator {
 
                 let ray = camera.generate_ray(col, row);
                 let res = Self::li(&ray, scene);
-                img.set(col, row, &res);
+                img.set(col, row, &res.to_color());
             }
         }
 

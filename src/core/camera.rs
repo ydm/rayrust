@@ -1,9 +1,9 @@
 use na;
 use na::{ Matrix4, Point3, Vector3 };
 
-use geometry::lin;
-use geometry::ray::{ Ray };
-use types::{ Real };
+use core::lin;
+use core::ray::Ray;
+use core::types::Real;
 
 
 pub const NEAR: Real = -1.0;

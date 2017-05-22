@@ -1,14 +1,10 @@
 use na;
-use na::{ Point3 };
+use na::Point3;
 
-use geometry::ray::{ Intersectable, Ray };
-use geometry::shape::Shape;
-use types::{ Real };
+use core::ray::{ Intersectable, Ray };
+use core::shape::Shape;
+use core::types::Real;
 
-
-// ------------------------
-// Sphere
-// ------------------------
 
 pub struct Sphere {
     _center: Point3<Real>,

@@ -1,5 +1,5 @@
 use na::{ Point4, Vector3, Matrix4 };
-use types::{ Real };
+use core::types::Real;
 
 
 /// Negate just the x, y, z components of a point, leaving its w value

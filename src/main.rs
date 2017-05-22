@@ -6,16 +6,16 @@ use std::borrow::Borrow;
 
 use na::{ Point3, Vector3 };
 
-use rayrust::aggregate::LinearAggregate;
-use rayrust::camera::persp::{ PerspectiveCamera };
-// use rayrust::camera::ortho;
-use rayrust::camera::common::{ Camera };
-use rayrust::geometry::basic::Sphere;
-use rayrust::geometry::ray::{ Intersectable };
-use rayrust::integrator::{ Integrator, SamplerIntegrator };
-use rayrust::primitive::Primitive;
-use rayrust::scene::Scene;
-use rayrust::types::{ Real, RealConsts };
+// use rayrust::cameras::ortho;
+use rayrust::cameras::persp::PerspectiveCamera;
+use rayrust::core::aggregate::LinearAggregate;
+use rayrust::core::camera::Camera;
+use rayrust::core::integrator::{ Integrator, SamplerIntegrator };
+use rayrust::core::primitive::Primitive;
+use rayrust::core::ray::Intersectable;
+use rayrust::core::scene::Scene;
+use rayrust::core::types::{ Real, RealConsts };
+use rayrust::shapes::sphere::Sphere;
 
 
 // ------------------------

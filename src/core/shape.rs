@@ -1,8 +1,8 @@
 use na;
 use na::{ Matrix4 };
-use geometry::bbox::BoundingBox;
-use geometry::ray::{ Intersectable };
-use types::Real;
+use core::bbox::BoundingBox;
+use core::ray::{ Intersectable };
+use core::types::Real;
 
 
 pub trait Shape: Intersectable {

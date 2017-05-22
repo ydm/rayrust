@@ -1,8 +1,8 @@
 use na::{ Matrix4, Point3, Point4, Vector3 };
 
-use camera::common;
-use geometry::ray::{ Ray };
-use types::{ Real };
+use core::camera;
+use core::ray::Ray;
+use core::types::Real;
 
 
 pub struct OrthographicCamera {
@@ -27,15 +27,15 @@ impl OrthographicCamera {
         //
         let aspect = (width as Real) / (height as Real);
         OrthographicCamera {
-            _raster_to_world: common::world_from_camera(&eye, &center, &up) *
-                common::ortho_camera_from_screen(plane, aspect)             *
-                common::screen_from_ndc()                                   *
-                common::ndc_from_raster(width, height),
+            _raster_to_world: camera::world_from_camera(&eye, &center, &up) *
+                camera::ortho_camera_from_screen(plane, aspect)             *
+                camera::screen_from_ndc()                                   *
+                camera::ndc_from_raster(width, height),
         }
     }
 }
 
-impl common::Camera for OrthographicCamera {
+impl camera::Camera for OrthographicCamera {
     fn generate_ray(&self, x: usize, y: usize) -> Ray {
         let o = Point4::new(x as Real, y as Real, 0.0, 1.0);
 

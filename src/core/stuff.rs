@@ -1,5 +1,5 @@
-use color;
-use image;
+use core::color;
+use core::image;
 
 
 /// Example:

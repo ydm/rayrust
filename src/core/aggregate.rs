@@ -1,6 +1,6 @@
-use geometry::ray::{ Intersectable, Ray };
-use primitive::Primitive;
-use types::Real;
+use core::primitive::Primitive;
+use core::ray::{ Intersectable, Ray };
+use core::types::Real;
 
 
 pub struct LinearAggregate {

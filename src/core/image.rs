@@ -1,5 +1,5 @@
 use std::io::{ Result, Write};
-use color::Color;
+use core::color::Color;
 
 
 /// Types that can be converted to a [u8; 4] RGBA.

@@ -1,5 +1,5 @@
 use na::{ Vector3 };
-use spectrum::Spectrum;
+use core::spectrum::Spectrum;
 
 
 pub struct SurfaceInteraction {

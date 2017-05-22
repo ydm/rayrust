@@ -1,6 +1,6 @@
-use geometry::ray::{ Intersectable, Ray };
-use light::Light;
-use types::Real;
+use core::light::Light;
+use core::ray::{ Intersectable, Ray };
+use core::types::Real;
 
 
 pub struct Scene {
@@ -15,8 +15,7 @@ impl Scene {
             _lights: vec![]
         }
     }
-    // #[inline] pub fn lights(&self) -> Vec<Light> {
-    // }
+    #[inline] pub fn lights(&self) -> &Vec<Box<Light>> { &self._lights }
 }
 
 impl Intersectable for Scene {

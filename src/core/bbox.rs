@@ -3,7 +3,7 @@
 use std::ops::Mul;
 use na::{ Matrix4, Point3 };
 use num::bounds::Bounded;
-use types::{ Real };
+use core::types::{ Real };
 
 
 pub struct BoundingBox {
