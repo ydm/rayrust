@@ -2,23 +2,6 @@ use na;
 use na::{ Point3, Vector3 };
 use core::types::{ Real, RealMod };
 
-
-pub trait Intersectable {
-
-    // Intersections
-    // ------------------------
-
-    fn intersect(&self, ray: &Ray) -> Option<Real>;
-
-    /// Predicate function that determines whether or not an
-    /// intersection occurs, without returning any details about the
-    /// intersection itself.
-    fn intersectp(&self, ray: &Ray) -> bool {
-        self.intersect(ray).is_some()
-    }
-}
-
-
 // ------------------------
 // Ray
 // ------------------------

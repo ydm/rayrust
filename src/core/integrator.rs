@@ -30,15 +30,13 @@ impl SamplerIntegrator {
     }
 
     fn li(ray: &Ray, scene: &Scene) -> Spectrum {
-        // let o = scene.intersect(ray);
         match scene.intersect(ray) {
             Some(x) => {
                 let y = x / 8.0;
                 Spectrum::new(&Color::new(y, y, y, y))
             },
 
-            // No intersection, but radiance may be carried due to
-            // light sources without geometry.
+            // No intersection, return background radiance.
             None => scene.lights().iter().fold(
                 Spectrum::default(),
                 |memo, ref x| memo + x.le(ray)
