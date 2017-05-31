@@ -1,7 +1,7 @@
 use na;
 use na::{ Matrix4 };
 use core::bbox::BoundingBox;
-use core::ray::{ Intersectable };
+use core::interaction::Intersectable;
 use core::types::Real;
 
 

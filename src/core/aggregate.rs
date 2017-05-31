@@ -1,6 +1,6 @@
+use core::interaction::{ Intersectable, SurfaceInteraction };
 use core::primitive::Primitive;
-use core::ray::{ Intersectable, Ray };
-use core::types::Real;
+use core::ray::Ray;
 
 
 pub struct LinearAggregate {
@@ -15,18 +15,14 @@ impl LinearAggregate {
 }
 
 impl Intersectable for LinearAggregate {
-    fn intersect(&self, ray: &Ray) -> Option<Real> {
+    fn intersect(&self, ray: &Ray) -> Option<SurfaceInteraction> {
         self._primitives.iter().fold(None, |memo, prim| {
-            if let Some(x) = prim.intersect(ray) {
-                if ray.is_inside(x) {
-                    return if let Some(t) = memo {
-                        Some(t.min(x))
-                    } else {
-                        Some(x)
-                    }
-                }
+            match (memo, prim.intersect(ray)) {
+                (None, None) => None,
+                (None, Some(b)) => Some(b),
+                (Some(a), None) => Some(a),
+                (Some(a), Some(b)) => if a.d() < b.d() { Some(a) } else { Some(b) }
             }
-            memo
         })
     }
 }

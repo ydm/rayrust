@@ -1,7 +1,8 @@
 use na;
-use na::Point3;
+use na::{ Point2, Point3, Vector3 };
 
-use core::ray::{ Intersectable, Ray };
+use core::interaction::{ Intersectable, SurfaceInteraction };
+use core::ray::Ray;
 use core::shape::Shape;
 use core::types::Real;
 
@@ -22,10 +23,8 @@ impl Sphere {
     pub fn center(&self) -> &Point3<Real> {
         &self._center
     }
-}
 
-impl Intersectable for Sphere {
-    fn intersect(&self, ray: &Ray) -> Option<Real> {
+    fn hit(&self, ray: &Ray) -> Option<Real> {
         // Ray: w + d*t
         //      * w is origin point
         //      * d is direction
@@ -61,6 +60,20 @@ impl Intersectable for Sphere {
         } else {
             // One intersection
             if ray.is_inside(h) { Some(h) } else { None }
+        }
+    }
+}
+
+impl Intersectable for Sphere {
+    fn intersect(&self, ray: &Ray) -> Option<SurfaceInteraction> {
+        match self.hit(ray) {
+            Some(x) => {
+                let p: Point3<Real> = ray.origin() + (ray.direction() * x);
+                let n: Vector3<Real> = na::normalize(&(p - self._center));
+                let uv: Point2<Real> = Point2::new(0.0, 0.0);
+                Some(SurfaceInteraction::new(x, 0.0, &n, &uv))
+            },
+            None => None
         }
     }
 }

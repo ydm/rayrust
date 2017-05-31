@@ -1,7 +1,8 @@
 use core::camera::Camera;
 use core::color::Color;
 use core::image::Image;
-use core::ray::{ Intersectable, Ray };
+use core::interaction::Intersectable;
+use core::ray::Ray;
 use core::scene::Scene;
 use core::spectrum::Spectrum;
 
@@ -32,7 +33,8 @@ impl SamplerIntegrator {
     fn li(ray: &Ray, scene: &Scene) -> Spectrum {
         match scene.intersect(ray) {
             Some(x) => {
-                let y = x / 8.0;
+                // let y = x / 8.0;
+                let y = 1.0;
                 Spectrum::new(&Color::new(y, y, y, y))
             },
 

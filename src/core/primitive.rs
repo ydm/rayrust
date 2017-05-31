@@ -1,4 +1,5 @@
-use core::ray::{ Intersectable, Ray };
+use core::interaction::{ Intersectable, SurfaceInteraction };
+use core::ray::Ray;
 use core::shape::Shape;
 use core::types::Real;
 
@@ -19,7 +20,7 @@ impl Primitive {
 }
 
 impl Intersectable for Primitive {
-    #[inline] fn intersect(&self, ray: &Ray) -> Option<Real> {
+    #[inline] fn intersect(&self, ray: &Ray) -> Option<SurfaceInteraction> {
         self._shape.intersect(ray)
     }
 }

@@ -1,5 +1,6 @@
+use core::interaction::{ Intersectable, SurfaceInteraction };
 use core::light::Light;
-use core::ray::{ Intersectable, Ray };
+use core::ray::Ray;
 use core::types::Real;
 
 
@@ -19,7 +20,7 @@ impl Scene {
 }
 
 impl Intersectable for Scene {
-    #[inline] fn intersect(&self, ray: &Ray) -> Option<Real> {
+    #[inline] fn intersect(&self, ray: &Ray) -> Option<SurfaceInteraction> {
         self._aggregate.intersect(ray)
     }
 }
