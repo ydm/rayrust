@@ -4,7 +4,7 @@ version = "0.1.0"
 authors = ["Yordan Miladinov <jordanMiladinov@gmail.com>"]
 
 [dependencies]
-nalgebra = "0.11"
+nalgebra = "0.12"
 num-traits = "0.1"
 
 [dev-dependencies]
